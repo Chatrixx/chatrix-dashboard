@@ -64,8 +64,6 @@ export default async function handler(req, res) {
   try {
     const { input, threadId } = req.body;
     const result = await reply(input, threadId);
-    console.log("Result", result);
-
     res.status(200).json({
       version: "v2",
       content: {

@@ -1,5 +1,5 @@
+import manychat from "@/db/models/manychat/manychat";
 import dbConnect from "@/db/mongodb";
-import Clinic from "../../../../db/models/clinic";
 import OpenAI from "openai";
 
 const openaiClient = new OpenAI({
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
   }
 
   await dbConnect();
-  await Clinic.create(req.body);
+  await manychat.create(req.body);
 
   if (!req.body.input) {
     return res.status(400).json({ error: "Input is required" });

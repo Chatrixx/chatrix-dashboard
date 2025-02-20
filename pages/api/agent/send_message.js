@@ -1,5 +1,5 @@
-import ManyChatMessage from "@/db/models/manychat/manychat";
 import dbConnect from "@/db/mongodb";
+import Clinic from "../../../../db/models/clinic";
 import OpenAI from "openai";
 
 const openaiClient = new OpenAI({
@@ -62,12 +62,13 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
+
+  await dbConnect();
+  await Clinic.create(req.body);
+
   if (!req.body.input) {
     return res.status(400).json({ error: "Input is required" });
   }
-
-  await dbConnect();
-  await ManyChatMessage.create(req.body);
 
   try {
     const { input, threadId } = req.body;

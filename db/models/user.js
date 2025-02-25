@@ -4,14 +4,23 @@ const InstagramSchema = new mongoose.Schema({
   username: String,
   name: String,
   thread_id: String,
+  profile_info: {
+    username: String,
+    name: String,
+    profile_pic: String,
+  },
   messages: [{ type: mongoose.Schema.Types.Mixed }],
+  last_updated: Date,
 });
 
 const WhatsappSchema = new mongoose.Schema({
-  phone: String,
-  name: String,
-  username: String,
+  profile_info: {
+    phone: String,
+    name: String,
+    username: String,
+  },
   messages: [{ type: mongoose.Schema.Types.Mixed }],
+  last_updated: Date,
 });
 
 const ChannelsSchema = new mongoose.Schema({
@@ -31,17 +40,16 @@ const PortfolioSchema = new mongoose.Schema({
   treatments: [TreatmentSchema],
 });
 
-const PatientSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  name: String,
+const UserSchema = new mongoose.Schema({
+  full_name: String,
   email: String,
   phone: String,
+  profile_pic: String,
+  clinic_id: String,
   medicasimple: mongoose.Schema.Types.Mixed,
   initial_channel: String,
   channels: ChannelsSchema,
   portfolio: PortfolioSchema,
 });
 
-const Patient = mongoose.model("Patient", PatientSchema);
-
-module.exports = Patient;
+export default mongoose.models.User || mongoose.model("User", UserSchema);

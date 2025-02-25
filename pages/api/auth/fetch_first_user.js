@@ -1,18 +1,19 @@
-import dbConnect from "../../../../db/mongodb";
-import Clinic from "../../../../db/models/clinic";
+import clinic from "@/db/models/clinic";
+import dbConnect from "@/db/mongodb";
 import { formatBadRequest } from "@/util/api";
 
 export default async function handler(req, res) {
   await dbConnect();
   const { method } = req;
+
   switch (method) {
-    case "GET":
+    case "POST":
       res.status(405).json("Method Not Allowed");
       break;
-    case "POST":
+    case "GET":
       try {
-        const item = await Clinic.create(req.body);
-        res.status(201).json({ success: true, data: item });
+        const clinics = await clinic.find();
+        res.status(201).json({ success: true, data: clinics[0] });
       } catch (error) {
         res
           .status(400)

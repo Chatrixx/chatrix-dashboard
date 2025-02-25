@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import ChatMessages from "@/components/custom/chat-messages";
 import { DataTable } from "@/components/custom/table.jsx";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -52,20 +53,23 @@ const tableColumns = [
 ];
 
 export default function Chats() {
-  const [chats, setChats] = useState([]);
-  const [chatsLoading, setChatsLoading] = useState(true);
-  const [selectedChat, setSelectedChat] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [usersLoading, setUsersLoading] = useState(true);
+  const [selectedUser, setselectedUser] = useState(null);
   const fetchRecentChats = () => {
-    setChatsLoading(true);
+    setUsersLoading(true);
+    // Fetching recently contacted users.
     fetch("/api/dashboard/chats/get-recent-chats")
       .then((res) => res.json())
       .then((data) => {
-        setChats(data?.data);
-        setChatsLoading(false);
+        setUsers(data?.data);
+        console.log(data?.data);
+
+        setUsersLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching recent chats:", error);
-        setChatsLoading(false);
+        setUsersLoading(false);
       });
   };
 
@@ -84,7 +88,7 @@ export default function Chats() {
         <CardHeader>
           <div className="flex items-center justify-between w-full">
             <CardTitle>Son Mesajlar</CardTitle>
-            <Tabs vale={currentChannel} onValueChange={setCurrentChannel}>
+            <Tabs value="instagram">
               <TabsList className="text-primary">
                 <TabsTrigger value="instagram">Instagram</TabsTrigger>
                 <TabsTrigger
@@ -106,7 +110,7 @@ export default function Chats() {
         <CardContent>
           <DataTable
             onRowClick={(data) => {
-              setSelectedChat(data);
+              setselectedUser(data);
             }}
             pagination={{
               onPageChange: (pageIndex) => {
@@ -118,34 +122,19 @@ export default function Chats() {
             }}
             isServerSide={false}
             isPaginationActive
-            isLoading={chatsLoading}
-            data={chats}
+            isLoading={usersLoading}
+            data={users}
             columns={tableColumns}
           />
         </CardContent>
       </Card>
-      <Card className="!h-full col-span-5">
-        <CardHeader>
-          <CardTitle>Chat</CardTitle>
-        </CardHeader>
-        {selectedChat && (
-          <CardContent>
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="relative">
-                <Avatar className="w-16 h-16">
-                  <AvatarImage src={selectedChat?.profile_pic} />
-                </Avatar>
-                <Avatar className="w-5 h-5 rounded-sm absolute top-0 right-0">
-                  <AvatarImage
-                    src={`/assets/channel_logo/${currentChannel}.png`}
-                  />
-                </Avatar>
-              </div>
-              <p className="mt-4">{selectedChat?.full_name}</p>
-            </div>
-          </CardContent>
-        )}
-      </Card>
+      <div className="col-span-5 max-h-[95.5vh]">
+        <ChatMessages
+          chatUser={selectedUser}
+          messages={selectedUser?.channels?.[currentChannel].messages}
+          channel={currentChannel}
+        />
+      </div>
     </div>
   );
 }

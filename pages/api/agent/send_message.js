@@ -91,11 +91,9 @@ export default async function handler(req, res) {
     const { input } = body;
 
     const customer = await user.findOne({
-      $and: [
-        { initial_channel: contact_channel },
-        { "channels.instagram.username": body?.contact_data?.ig_username },
-        { clinic_id: body.clinic_id },
-      ],
+      "channels.instagram.profile_info.username":
+        body?.contact_data?.ig_username,
+      clinic_id: body.clinic_id,
     });
 
     const answer = await reply({
@@ -151,9 +149,10 @@ export default async function handler(req, res) {
           $set: {
             [`channels.${contact_channel}.thread_id`]: answer.thread_id,
             [`channels.${contact_channel}.last_updated`]: new Date(),
-            $push: {
-              [`channels.${contact_channel}.messages`]: user_message,
-              [`channels.${contact_channel}.messages`]: agent_message,
+          },
+          $push: {
+            [`channels.${contact_channel}.messages`]: {
+              $each: [user_message, agent_message],
             },
           },
         }

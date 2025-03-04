@@ -155,7 +155,7 @@ export default async function handler(req, res) {
               $each: [user_message, agent_message],
             },
           },
-        }
+        },
       );
     }
     res.status(200).json({
@@ -173,7 +173,6 @@ export default async function handler(req, res) {
       },
     });
   } catch (error) {
-    console.error("Error in /api/reply:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error", err: error });
   }
 }

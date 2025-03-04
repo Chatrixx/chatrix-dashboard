@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import ChatMessages from "@/components/custom/chat-messages";
 import { DataTable } from "@/components/custom/table.jsx";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -56,6 +55,7 @@ export default function Chats() {
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(true);
   const [selectedUser, setselectedUser] = useState(null);
+  const [userError, setUserError] = useState(null);
   const fetchRecentChats = () => {
     setUsersLoading(true);
     // Fetching recently contacted users.
@@ -63,12 +63,11 @@ export default function Chats() {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data?.data);
-        console.log(data?.data);
 
         setUsersLoading(false);
       })
-      .catch((error) => {
-        console.error("Error fetching recent chats:", error);
+      .catch((err) => {
+        setUserError(err.message ?? err);
         setUsersLoading(false);
       });
   };
@@ -80,6 +79,7 @@ export default function Chats() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
+  // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
   const [currentChannel, setCurrentChannel] = useState("instagram");
 
   return (
@@ -108,6 +108,7 @@ export default function Chats() {
           </div>
         </CardHeader>
         <CardContent>
+          {userError && <p>{userError}</p>}
           <DataTable
             onRowClick={(data) => {
               setselectedUser(data);

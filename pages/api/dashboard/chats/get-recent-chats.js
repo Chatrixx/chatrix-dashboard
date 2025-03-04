@@ -4,16 +4,12 @@ const getUsersSortedByChannelUpdate = async ({ channel = "instagram" }) => {
   try {
     const users = await user
       .find(
-        { [`channels.${channel}.last_updated`]: { $exists: true } } // Ensure the field exists
+        { [`channels.${channel}.last_updated`]: { $exists: true } }, // Ensure the field exists
       )
       .sort({ [`channels.${channel}.last_updated`]: -1 }); // Sort by last_updated in descending order
 
     return users;
   } catch (error) {
-    console.error(
-      `Error fetching users sorted by ${channel} last update:`,
-      error
-    );
     throw error;
   }
 };

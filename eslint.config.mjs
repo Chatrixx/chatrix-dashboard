@@ -12,18 +12,21 @@ const eslintConfig = [
     rules: {
       "react/no-unescaped-entities": "off",
       "@next/next/no-page-custom-font": "off",
-      "no-console": "warn", // Warns on console.log usage
-      "no-unused-vars": [
-        "warn",
-        { args: "after-used", varsIgnorePattern: "^_" },
-      ], // Warns for unused variables
+      "no-console": "error", // Warns on console.log usage
+      "no-unused-vars": ["error"], // Warns for unused variables
       "no-undef": "error", // Disallows undefined variables
-      "unused-imports/no-unused-imports": "warn", // Warns on unused imports
-      "unused-imports/no-unused-vars": [
-        "warn",
-        { args: "after-used", varsIgnorePattern: "^_" },
-      ],
+      "unused-imports/no-unused-imports": "error", // Warns on unused imports
+      "unused-imports/no-unused-vars": ["error"],
     },
+    ignorePatterns: [
+      ".next/",
+      "node_modules/",
+      ".git/",
+      "*.min.js",
+      "*.test.js",
+      "*.spec.js",
+      "*.mjs",
+    ],
   }),
   {
     plugins: {

@@ -75,7 +75,7 @@ export function DataTable({
     onRowSelectionChange: setRowSelection,
     manualPagination: isServerSide,
     pageCount: isServerSide
-      ? pagination?.pageCount ?? -1
+      ? (pagination?.pageCount ?? -1)
       : Math.ceil(data?.length / (pagination?.pageSize ?? 10)),
     state: {
       sorting,
@@ -85,7 +85,7 @@ export function DataTable({
       pagination: {
         pageIndex: pagination?.pageIndex ?? 0,
         pageSize: isPaginationActive
-          ? pagination?.pageSize ?? 10
+          ? (pagination?.pageSize ?? 10)
           : data?.length,
       },
     },
@@ -166,7 +166,7 @@ export function DataTable({
                           >
                             {flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                             {{
                               asc: " 🔼",
@@ -217,7 +217,7 @@ export function DataTable({
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}

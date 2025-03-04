@@ -1,4 +1,5 @@
 import { FlatCompat } from "@eslint/eslintrc";
+import unusedImports from "eslint-plugin-unused-imports";
 
 const compat = new FlatCompat({
   // import.meta.dirname is available after Node.js v20.11.0
@@ -11,19 +12,24 @@ const eslintConfig = [
     rules: {
       "react/no-unescaped-entities": "off",
       "@next/next/no-page-custom-font": "off",
-      "no-console": "warn", // Warn when using console.log
+      "no-console": "warn", // Warns on console.log usage
       "no-unused-vars": [
         "warn",
         { args: "after-used", varsIgnorePattern: "^_" },
-      ], // Warn for unused variables (except _ prefixed ones)
-      "no-undef": "error", // Prevent usage of undefined variables
-      "unused-imports/no-unused-imports": "warn", // Warn for unused imports
+      ], // Warns for unused variables
+      "no-undef": "error", // Disallows undefined variables
+      "unused-imports/no-unused-imports": "warn", // Warns on unused imports
       "unused-imports/no-unused-vars": [
         "warn",
         { args: "after-used", varsIgnorePattern: "^_" },
       ],
     },
   }),
+  {
+    plugins: {
+      "unused-imports": unusedImports,
+    },
+  },
 ];
 
 export default eslintConfig;

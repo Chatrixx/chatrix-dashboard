@@ -13,5 +13,12 @@ const poppins = Poppins({
 });
 
 export default function Home() {
-  return <div className="flex">{/* <CustomChart /> */}</div>;
+  return (
+    <div>
+      <div className="mb-6">
+        <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
+      </div>
+      <CustomChart />
+    </div>
+  );
 }

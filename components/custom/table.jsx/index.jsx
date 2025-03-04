@@ -194,8 +194,8 @@ export function DataTable({
 
           {!isLoading && (
             <TableBody className="animate-fade-in dark:bg-black dark:text-white">
-              {(table.getRowModel().rows?.length ?? 0) > 0 ? (
-                table.getRowModel().rows.map((row) => (
+              {(table?.getRowModel()?.rows?.length ?? 0) > 0 ? (
+                table?.getRowModel()?.rows?.map((row) => (
                   <TableRow
                     onClick={() => {
                       onRowClick(row.original);

@@ -1,8 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { addDays, format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import {
+  addDays,
+  format,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from "date-fns";
+import { CalendarIcon, ChevronDown } from "lucide-react";
 import { tr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,12 +27,12 @@ const presets = [
   },
   {
     label: "Bu Hafta",
-    from: addDays(new Date(), -new Date().getDay()),
+    from: startOfWeek(new Date(), { weekStartsOn: 1 }),
     to: new Date(),
   },
-  { label: "Son 1 Ay", from: addDays(new Date(), -30), to: new Date() },
-  { label: "Son 3 Ay", from: addDays(new Date(), -90), to: new Date() },
-  { label: "Son 1 Yıl", from: addDays(new Date(), -365), to: new Date() },
+  { label: "Bu Ay", from: startOfMonth(new Date()), to: new Date() },
+
+  { label: "Bu Yıl", from: startOfYear(new Date()), to: new Date() },
   {
     label: "Tüm Zamanlar",
     from: addDays(new Date(), -365 * 10),
@@ -36,8 +42,8 @@ const presets = [
 
 export function DatePickerWithRange({ className }) {
   const [date, setDate] = React.useState({
-    from: new addDays(Date(), -7),
-    to: new Date(),
+    from: presets[3].from,
+    to: presets[3].to,
   });
 
   const preset = React.useMemo(() => {
@@ -62,31 +68,30 @@ export function DatePickerWithRange({ className }) {
         <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
+            variant={"secondary"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
-              !date && "text-muted-foreground"
+              "flex items-center gap-4 ",
+              !date && "text-muted-foreground",
             )}
           >
-            <CalendarIcon />
-
             {preset && <span>{preset.label}</span>}
             {!preset && date?.from ? (
               date.to ? (
-                <>
+                <span>
                   {format(date.from, "LLL dd, y", { locale: tr })} -{" "}
                   {format(date.to, "LLL dd, y", { locale: tr })}
-                </>
+                </span>
               ) : (
-                format(date.from, "LLL dd, y", { locale: tr })
+                <span>{format(date.from, "LLL dd, y", { locale: tr })}</span>
               )
             ) : (
               <span>{presets.label}</span>
             )}
+            <ChevronDown />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 flex " align="start">
-          <PresetDateRange setDate={setDate} />
+          <PresetDateRange setDate={setDate} selectedPreset={preset} />
           <Calendar
             initialFocus
             mode="range"
@@ -103,21 +108,26 @@ export function DatePickerWithRange({ className }) {
   );
 }
 
-function PresetDateRange({ setDate }) {
+function PresetDateRange({ setDate, selectedPreset }) {
   return (
-    <div className="flex flex-col gap-2 mb-4 bg-slate-400 p-2 ">
-      {presets.map((preset) => (
-        <Button
-          key={preset.label}
-          variant="ghost"
-          className="justify-start"
-          onClick={() => {
-            setDate({ from: preset.from, to: preset.to });
-          }}
-        >
-          {preset.label}
-        </Button>
-      ))}
+    <div className="flex flex-col gap-2 mb-4 p-2 ">
+      {presets.map((preset) => {
+        const isSelected = selectedPreset
+          ? selectedPreset.label === preset.label
+          : false;
+        return (
+          <Button
+            key={preset.label}
+            variant={isSelected ? "secondary" : "ghost"}
+            className="justify-start"
+            onClick={() => {
+              setDate({ from: preset.from, to: preset.to });
+            }}
+          >
+            {preset.label}
+          </Button>
+        );
+      })}
     </div>
   );
 }

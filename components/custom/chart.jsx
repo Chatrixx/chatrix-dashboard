@@ -19,15 +19,15 @@ const data = [
 ];
 
 const gradientColors = [
-  { id: "chatsGradient", start: "#4CAF50", end: "#C8E6C9" },
-  { id: "phoneNumbersGradient", start: "#FF9800", end: "#FFC107" },
+  { id: "chatsGradient", start: "#0F71F2", end: "#42cdff" },
+  { id: "phoneNumbersGradient", start: "#00cc77", end: "#00cc77" },
 ];
 
 const CustomChart = () => {
   return (
-    <Card className="w-full p-4 shadow-lg">
+    <Card className="w-full pt-4">
       <CardHeader>
-        <CardTitle>Chat and Phone Number Statistics</CardTitle>
+        <CardTitle>Chats and Phone Numbers</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>
@@ -35,18 +35,23 @@ const CustomChart = () => {
             data={data}
             margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
-            <YAxis>
-              <Label
-                angle={-90}
-                position="insideLeft"
-                style={{ textAnchor: "middle" }}
-              >
-                Count
-              </Label>
-            </YAxis>
-            <Tooltip />
+            <CartesianGrid
+              style={{
+                opacity: 0.3,
+              }}
+              // horizontal
+              vertical={false}
+            />
+            {/* <XAxis dataKey="day" /> */}
+            <XAxis
+              dataKey="day"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <YAxis tickLine={false} axisLine={false}></YAxis>
+            {/* <Tooltip /> */}
             <Legend />
             <Bar
               dataKey="chats"
@@ -63,47 +68,37 @@ const CustomChart = () => {
                       y1="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#4CAF50" stopOpacity={1} />
-                      <stop
-                        offset="100%"
-                        stopColor="#C8E6C9"
-                        stopOpacity={0.1}
-                      />
+                      <stop offset="0%" stopColor="#b9cacf" />
+                      <stop offset="100%" stopColor="#b9cacf" />
                     </linearGradient>
                     <linearGradient
                       id="phoneNumbersGradient"
                       x1="0"
-                      x2="0"
+                      x2="1"
                       y1="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#FF9800" stopOpacity={1} />
-                      <stop
-                        offset="100%"
-                        stopColor="#FFC107"
-                        stopOpacity={0.1}
-                      />
+                      <stop offset="0%" stopColor="#0F71F2" stopOpacity={1} />
+                      <stop offset="200%" stopColor="#0F71F2 " />
                     </linearGradient>
                   </defs>
                   <rect
+                    className="transition-opacity opacity-65 hover:opacity-100 duration-500 cursor-pointer"
                     x={x}
                     y={y}
                     width={width}
                     height={height}
                     fill="url(#chatsGradient)"
-                    stroke="#4CAF50"
-                    strokeWidth={2}
                     rx={5}
                     ry={5}
                   />
                   <rect
+                    className=" cursor-pointer"
                     x={x}
                     y={y + height * 0.3}
                     width={width}
                     height={height * 0.7}
                     fill="url(#phoneNumbersGradient)"
-                    stroke="#FF9800"
-                    strokeWidth={2}
                     rx={5}
                     ry={5}
                   />

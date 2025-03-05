@@ -14,7 +14,10 @@ export default function Home() {
         <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
         <DatePickerWithRange />
       </div>
-      <CustomChart />
+      <div className="flex gap-4">
+        <CustomChart />
+        <CustomChart />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import CustomChart from "@/components/custom/chart";
+import DatePickerWithRange from "@/components/custom/date-range-picker";
 
 // const poppins = Poppins({
 //   variable: "--font-poppins",
@@ -9,8 +10,9 @@ import CustomChart from "@/components/custom/chart";
 export default function Home() {
   return (
     <div>
-      <div className="mb-6">
+      <div className="mb-6 flex justify-between items-center">
         <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
+        <DatePickerWithRange />
       </div>
       <CustomChart />
     </div>

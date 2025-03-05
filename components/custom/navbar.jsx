@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import DropdownMenuDemo from "./profile-dropdown";
 
+
 const Navbar = () => (
   <div className="flex justify-between items-center border-b-[1.5px] border-muted-foreground/15 font-poppins w-full px-6">
     <div className="first_in_left flex justify-between items-center gap-6">

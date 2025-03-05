@@ -6,52 +6,62 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   Legend,
   ResponsiveContainer,
-  Label,
 } from "recharts";
 
 const data = [
-  { day: "Monday", chats: 100, phoneNumbers: 30 },
-  { day: "Tuesday", chats: 150, phoneNumbers: 50 },
+  { day: "Pazartesi", chats: 300, phoneNumbers: 30 },
+  { day: "Sali", chats: 140, phoneNumbers: 50 },
+  { day: "Wednesday", chats: 210, phoneNumbers: 40 },
   { day: "Wednesday", chats: 120, phoneNumbers: 40 },
-];
+  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
+  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
+  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
+  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
 
-const gradientColors = [
-  { id: "chatsGradient", start: "#0F71F2", end: "#42cdff" },
-  { id: "phoneNumbersGradient", start: "#00cc77", end: "#00cc77" },
+  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
+
+  { day: "Wednesday", chats: 210, phoneNumbers: 40 },
+  { day: "Wednesday", chats: 120, phoneNumbers: 40 },
 ];
 
 const CustomChart = () => {
   return (
-    <Card className="w-full pt-4">
-      <CardHeader>
-        <CardTitle>Chats and Phone Numbers</CardTitle>
+    <Card className="w-full">
+      <CardHeader className="mb-4">
+        <span className=" font-semibold tracking-tight">
+          Sohbetler ve Telefon Numaraları
+        </span>
       </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={400}>
+      <CardContent className="pl-0 pr-4">
+        <ResponsiveContainer className="min-h-[400px]">
           <BarChart
+            compact
             data={data}
-            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
-            <CartesianGrid
-              style={{
-                opacity: 0.3,
-              }}
-              // horizontal
-              vertical={false}
-            />
-            {/* <XAxis dataKey="day" /> */}
+            <CartesianGrid vertical={false} />
             <XAxis
               dataKey="day"
+              local="tr"
               tickLine={false}
               tickMargin={10}
+              style={{
+                fontSize: "0.72rem",
+                color: "#6B7280",
+              }}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <YAxis tickLine={false} axisLine={false}></YAxis>
-            {/* <Tooltip /> */}
+            <YAxis
+              style={{
+                fontSize: "0.72rem",
+                color: "#6B7280",
+              }}
+              tickLine={false}
+              axisLine={false}
+            ></YAxis>
             <Legend />
             <Bar
               dataKey="chats"
@@ -83,7 +93,7 @@ const CustomChart = () => {
                     </linearGradient>
                   </defs>
                   <rect
-                    className="transition-opacity opacity-65 hover:opacity-100 duration-500 cursor-pointer"
+                    className="cursor-pointer"
                     x={x}
                     y={y}
                     width={width}

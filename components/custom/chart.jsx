@@ -41,7 +41,7 @@ const CustomChart = () => {
             data={data}
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false} opacity={0.2} />
             <XAxis
               dataKey="day"
               local="tr"
@@ -78,8 +78,8 @@ const CustomChart = () => {
                       y1="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#b9cacf" />
-                      <stop offset="100%" stopColor="#b9cacf" />
+                      <stop offset="0%" stopColor="#e6f1ff" />
+                      <stop offset="100%" stopColor="#e6f1ff" />
                     </linearGradient>
                     <linearGradient
                       id="phoneNumbersGradient"

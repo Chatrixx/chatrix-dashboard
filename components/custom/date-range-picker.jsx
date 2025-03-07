@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  addDays,
-  format,
-  startOfMonth,
-  startOfWeek,
-  startOfYear,
-} from "date-fns";
+import { format } from "date-fns";
 import { ChevronDown } from "lucide-react";
 import { tr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -18,53 +12,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-const presets = [
-  { label: "Bugün", from: new Date(), to: new Date() },
-  {
-    label: "Dün",
-    from: addDays(new Date(), -1),
-    to: addDays(new Date(), -1),
-  },
-  {
-    label: "Bu Hafta",
-    from: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    to: new Date(),
-  },
-  { label: "Bu Ay", from: startOfMonth(new Date()), to: new Date() },
+import { getDateRangePresets } from "@/util/date";
 
-  { label: "Bu Yıl", from: startOfYear(new Date()), to: new Date() },
-  {
-    label: "Tüm Zamanlar",
-    from: addDays(new Date(), -365 * 10),
-    to: new Date(),
-  },
-];
-
-export function DatePickerWithRange({ className, onDateChange }) {
-  const [date, setDate] = React.useState({
-    from: presets[3].from,
-    to: presets[3].to,
-  });
-
-  const preset = React.useMemo(() => {
-    if (!date || !date?.to || !date?.from) return null;
-    return presets.find((p) => {
-      return (
-        format(p.from, "LLL dd, y", { locale: tr }) ===
-          format(date.from, "LLL dd, y", { locale: tr }) &&
-        format(p.to, "LLL dd, y", { locale: tr }) ===
-          format(date.to, "LLL dd, y", { locale: tr })
-      );
-    });
-  }, [date]);
-
-  React.useEffect(() => {
-    // find day difference
-    const diffTime = Math.abs(date?.to - date?.from + 1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    onDateChange && onDateChange(diffDays);
-  }, [date]);
-
+export function DatePickerWithRange({
+  preset,
+  date,
+  className,
+  onDateChange,
+  dateRangeString,
+}) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -78,30 +34,17 @@ export function DatePickerWithRange({ className, onDateChange }) {
             )}
           >
             <ChevronDown />
-
-            {preset && <span>{preset.label}</span>}
-            {!preset && date?.from ? (
-              date.to ? (
-                <span>
-                  {format(date.from, "LLL dd, y", { locale: tr })} -{" "}
-                  {format(date.to, "LLL dd, y", { locale: tr })}
-                </span>
-              ) : (
-                <span>{format(date.from, "LLL dd, y", { locale: tr })}</span>
-              )
-            ) : (
-              <span>{presets.label}</span>
-            )}
+            <span>{dateRangeString}</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 flex " align="start">
-          <PresetDateRange setDate={setDate} selectedPreset={preset} />
+          <PresetsList setDate={onDateChange} selectedPreset={preset} />
           <Calendar
             initialFocus
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={onDateChange}
             numberOfMonths={2}
             weekStartsOn={1}
             locale={tr}
@@ -112,10 +55,10 @@ export function DatePickerWithRange({ className, onDateChange }) {
   );
 }
 
-function PresetDateRange({ setDate, selectedPreset }) {
+function PresetsList({ setDate, selectedPreset }) {
   return (
     <div className="flex flex-col gap-2 mb-4 p-2 ">
-      {presets.map((preset) => {
+      {getDateRangePresets().map((preset) => {
         const isSelected = selectedPreset
           ? selectedPreset.label === preset.label
           : false;

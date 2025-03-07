@@ -32,12 +32,12 @@ const chartConfig = {
   },
 };
 
-export default function CustomPieChart() {
+export default function CustomPieChart({ dateRangeString = "" }) {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Numara Veren Kullanıcılar</CardTitle>
+        <CardDescription>{dateRangeString}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -86,7 +86,7 @@ export default function CustomPieChart() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Numara
                         </tspan>
                       </text>
                     );
@@ -99,10 +99,10 @@ export default function CustomPieChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          {dateRangeString} 5.2% artışta <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Mesaj atan 322 kullanıcıdan 200'ü numara verdi.
         </div>
       </CardFooter>
     </Card>

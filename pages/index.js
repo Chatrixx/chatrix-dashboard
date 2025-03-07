@@ -11,6 +11,7 @@ import { getDateRangePresets, getDateRangeString } from "@/util/date";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   const [numOfDays, setNumOfDays] = useState(17);
@@ -69,7 +70,8 @@ export default function Home() {
               <h3 className="text-lg font-medium mt-2 text-foreground">
                 Mesajlar
               </h3>
-              <img
+              <Image
+                unoptimized
                 className="w-5 h-5"
                 width={30}
                 height={30}
@@ -88,7 +90,8 @@ export default function Home() {
               <h3 className="text-lg font-medium mt-2 text-foreground">
                 Yorumlar
               </h3>
-              <img
+              <Image
+                unoptimized
                 className="w-5 h-5"
                 width={30}
                 height={30}
@@ -107,7 +110,8 @@ export default function Home() {
               <h3 className="text-lg font-medium mt-2 text-foreground">
                 Post Yanıtları
               </h3>
-              <img
+              <Image
+                unoptimized
                 className="w-5 h-5"
                 width={30}
                 height={30}

@@ -23,7 +23,7 @@ const NavItem = ({ link, title }) => {
 
 export default function AppNavbar() {
   return (
-    <div className="flex justify-between items-center border-b-[1.5px] border-muted-foreground/15 font-poppins w-full px-6">
+    <div className="flex justify-between items-center border-b-[1.5px] border-muted-foreground/15 font-poppins w-full px-6 bg-primary-foreground">
       <div className="first_in_left flex justify-between items-center gap-6">
         <div className="flex justify-center items-center px-2 max-w-32">
           <img src="/next.svg" alt="logo" className="h-10" />

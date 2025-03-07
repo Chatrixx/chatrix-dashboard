@@ -28,7 +28,6 @@ export function DataTablePagination({
   onPageChange,
   onRowsPerPageChange,
 }) {
-  console.log("ASdasd");
   return (
     <div className="flex items-center justify-between px-2 mt-3">
       <div className="flex items-center space-x-2">

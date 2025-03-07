@@ -10,23 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { day: "Pazartesi", chats: 300, phoneNumbers: 30 },
-  { day: "Sali", chats: 140, phoneNumbers: 50 },
-  { day: "Wednesday", chats: 210, phoneNumbers: 40 },
-  { day: "Wednesday", chats: 120, phoneNumbers: 40 },
-  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
-  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
-  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
-  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
-
-  { day: "Wednesday", chats: 330, phoneNumbers: 40 },
-
-  { day: "Wednesday", chats: 210, phoneNumbers: 40 },
-  { day: "Wednesday", chats: 120, phoneNumbers: 40 },
-];
-
-const CustomChart = () => {
+const CustomChart = ({ data }) => {
   return (
     <Card className="w-full">
       <CardHeader className="mb-4">
@@ -35,9 +19,10 @@ const CustomChart = () => {
         </span>
       </CardHeader>
       <CardContent className="pl-0 pr-4">
-        <ResponsiveContainer className="min-h-[400px]">
+        <ResponsiveContainer className="min-h-[280px]">
           <BarChart
             compact
+            barGap={0}
             data={data}
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
@@ -61,13 +46,13 @@ const CustomChart = () => {
               }}
               tickLine={false}
               axisLine={false}
-            ></YAxis>
+            />
             <Legend />
             <Bar
               dataKey="chats"
               name="Chats"
               fill="url(#chatsGradient)"
-              barSize={50}
+              barSize={36}
               shape={({ x, y, width, height }) => (
                 <g>
                   <defs>
@@ -78,8 +63,8 @@ const CustomChart = () => {
                       y1="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#e6f1ff" />
-                      <stop offset="100%" stopColor="#e6f1ff" />
+                      <stop offset="0%" stopColor="#b0d2fd" />
+                      <stop offset="100%" stopColor="#b0d2fd" />
                     </linearGradient>
                     <linearGradient
                       id="phoneNumbersGradient"
@@ -88,8 +73,8 @@ const CustomChart = () => {
                       y1="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#0F71F2" stopOpacity={1} />
-                      <stop offset="200%" stopColor="#0F71F2 " />
+                      <stop offset="0%" stopColor="#2a87f8" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#2a87f8 " />
                     </linearGradient>
                   </defs>
                   <rect
@@ -103,7 +88,7 @@ const CustomChart = () => {
                     ry={5}
                   />
                   <rect
-                    className=" cursor-pointer"
+                    className="cursor-pointer"
                     x={x}
                     y={y + height * 0.3}
                     width={width}

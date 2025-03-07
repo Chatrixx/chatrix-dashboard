@@ -8,7 +8,7 @@ import {
   startOfWeek,
   startOfYear,
 } from "date-fns";
-import { CalendarIcon, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { tr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ const presets = [
   },
 ];
 
-export function DatePickerWithRange({ className }) {
+export function DatePickerWithRange({ className, onDateChange }) {
   const [date, setDate] = React.useState({
     from: presets[3].from,
     to: presets[3].to,
@@ -59,8 +59,11 @@ export function DatePickerWithRange({ className }) {
   }, [date]);
 
   React.useEffect(() => {
-    console.log(preset);
-  }, [preset]);
+    // find day difference
+    const diffTime = Math.abs(date?.to - date?.from + 1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    onDateChange && onDateChange(diffDays);
+  }, [date]);
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -70,10 +73,12 @@ export function DatePickerWithRange({ className }) {
             id="date"
             variant={"secondary"}
             className={cn(
-              "flex items-center gap-4 ",
+              "flex items-center gap-2 bg-primary-foreground border border-border/25 shadow rounded-xl",
               !date && "text-muted-foreground",
             )}
           >
+            <ChevronDown />
+
             {preset && <span>{preset.label}</span>}
             {!preset && date?.from ? (
               date.to ? (
@@ -87,7 +92,6 @@ export function DatePickerWithRange({ className }) {
             ) : (
               <span>{presets.label}</span>
             )}
-            <ChevronDown />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 flex " align="start">

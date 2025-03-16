@@ -34,7 +34,6 @@ export default function ChatsAreaChart({ data }) {
             color: "#6B7280",
           }}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
           style={{

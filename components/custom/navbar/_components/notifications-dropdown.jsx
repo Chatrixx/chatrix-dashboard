@@ -18,7 +18,7 @@ export default function NotificationsDropdown() {
             variant="destructive"
             className=" absolute -top-1 -right-1 px-2 scale-[0.8]"
           >
-            3
+            1
           </Badge>
           <Bell strokeWidth={1.5} className="text-muted-foreground" />
         </div>

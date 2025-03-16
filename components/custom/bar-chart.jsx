@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -9,20 +8,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Tabs, TabsList } from "@radix-ui/react-tabs";
-import { TabsContent, TabsTrigger } from "../ui/tabs";
-import {
-  AreaChart,
-  BarChart2,
-  ChartSpline,
-  LineChart,
-  LucideTrendingDown,
-  LucideTrendingUp,
-  TrendingUpDown,
-} from "lucide-react";
 
 export default function CustomChart({ data }) {
-  const [chartType, setChartType] = useState("col");
   return (
     <ResponsiveContainer className="w-full min-h-[280px]">
       <BarChart
@@ -42,7 +29,6 @@ export default function CustomChart({ data }) {
             color: "#6B7280",
           }}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
           style={{
@@ -59,7 +45,7 @@ export default function CustomChart({ data }) {
           name="Chats"
           fill="url(#chatsGradient)"
           barSize={36}
-          shape={({ x, y, width, height }) => (
+          shape={({ x, y, width, height, payload }) => (
             <g>
               <defs>
                 <linearGradient id="chatsGradient" x1="0" x2="0" y1="0" y2="1">
@@ -73,7 +59,7 @@ export default function CustomChart({ data }) {
                   y1="0"
                   y2="1"
                 >
-                  <stop offset="0%" stopColor="#2a87f8" stopOpacity={1} />
+                  <stop offset="0%" stopColor="#2a87f8" />
                   <stop offset="100%" stopColor="#2a87f8 " />
                 </linearGradient>
               </defs>
@@ -90,9 +76,9 @@ export default function CustomChart({ data }) {
               <rect
                 className="cursor-pointer"
                 x={x}
-                y={y + height * 0.3}
+                y={y + height * (1 - payload.ratio)}
                 width={width}
-                height={height * 0.7}
+                height={height * payload.ratio * 1}
                 fill="url(#phoneNumbersGradient)"
                 rx={5}
                 ry={5}

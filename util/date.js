@@ -33,37 +33,47 @@ export function getReadableDate(dateInput) {
 
 export function getDateRangePresets() {
   return [
-    { label: "Bugün", from: new Date(), to: new Date() },
+    { label: "Bugün", from: new Date(), to: new Date(), value: "today" },
     {
       label: "Dün",
       from: addDays(new Date(), -1),
       to: addDays(new Date(), -1),
+      value: "yesterday",
     },
     {
       label: "Bu Hafta",
       from: startOfWeek(new Date(), { weekStartsOn: 1 }),
       to: new Date(),
+      value: "this-week",
     },
-    { label: "Bu Ay", from: startOfMonth(new Date()), to: new Date() },
-
-    { label: "Bu Yıl", from: startOfYear(new Date()), to: new Date() },
     {
-      label: "Tüm Zamanlar",
-      from: addDays(new Date(), -365 * 10),
+      label: "Bu Ay",
+      from: startOfMonth(new Date()),
       to: new Date(),
+      value: "this-month",
+    },
+
+    {
+      label: "Bu Yıl",
+      from: startOfYear(new Date()),
+      to: new Date(),
+      value: "this-year",
     },
   ];
 }
 
 export function getDateRangeString({ from, to }) {
-  const matchingPreset = getDateRangePresets().find((p) => {
-    return (
-      format(p.from, "LLL dd, y", { locale: tr }) ===
-        format(from, "LLL dd, y", { locale: tr }) &&
-      format(p.to, "LLL dd, y", { locale: tr }) ===
-        format(to, "LLL dd, y", { locale: tr })
-    );
-  });
+  const matchingPreset =
+    from && to
+      ? getDateRangePresets().find((p) => {
+          return (
+            format(p.from, "LLL dd, y", { locale: tr }) ===
+              format(from, "LLL dd, y", { locale: tr }) &&
+            format(p.to, "LLL dd, y", { locale: tr }) ===
+              format(to, "LLL dd, y", { locale: tr })
+          );
+        })
+      : null;
   if (matchingPreset) return matchingPreset.label;
-  return `${format(from, "LLL dd, y", { locale: tr })} - ${format(to, "LLL dd, y", { locale: tr })}`;
+  return `${format(from, "LLL dd, y", { locale: tr })} - ${to ? format(to, "LLL dd, y", { locale: tr }) : ""}`;
 }

@@ -4,7 +4,7 @@ import ProfileDropdown from "./_components/profile-dropdown";
 import NotificationsDropdown from "./_components/notifications-dropdown";
 import { useRouter } from "next/router";
 
-const NavItem = ({ link, title }) => {
+function NavItem({ link, title }) {
   const route = useRouter();
   const isActive = route.pathname === link;
 
@@ -19,7 +19,7 @@ const NavItem = ({ link, title }) => {
       {title}
     </Link>
   );
-};
+}
 
 export default function AppNavbar() {
   return (

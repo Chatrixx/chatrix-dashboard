@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Bell, PhoneCall } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -8,18 +8,68 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import api, { currentBaseUrl } from "@/lib/api";
 
 export default function NotificationsDropdown() {
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const eventSource = new EventSource(`${currentBaseUrl}sse`);
+    eventSource.onmessage = (event) => {
+      try {
+        fetchNotifications().then(() => {
+          const audio = new Audio("/notification.mp3");
+          audio.play();
+        });
+      } catch (err) {
+        console.error("JSON parse hatası:", err);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("SSE bağlantı hatası:", error);
+      eventSource.close(); // Optional: auto-close on error
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get(
+        "notification/get-notifications?clinic_id=yasinakgul_bakirkoy",
+      );
+      setNotifications(response.data.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="cursor-pointer relative border-[0px] border-border h-10 w-10 rounded-full flex items-center justify-center">
-          <Badge
-            variant="destructive"
-            className=" absolute -top-1 -right-1 px-2 scale-[0.8]"
-          >
-            1
-          </Badge>
+          {notifications?.length > 0 && (
+            <Badge
+              variant="destructive"
+              className=" absolute -top-1 -right-1 px-2 scale-[0.8]"
+            >
+              {notifications.length}
+            </Badge>
+          )}
           <Bell strokeWidth={1.5} className="text-muted-foreground" />
         </div>
       </DropdownMenuTrigger>

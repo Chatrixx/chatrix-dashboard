@@ -29,9 +29,9 @@ export default function AppNavbar() {
           <img src="/next.svg" alt="logo" className="h-10" />
         </div>
         <div className=" flex items-center gap-6 ">
-          <NavItem title="Home" link="/" />
-          <NavItem title="Customers" link="/customers" />
-          <NavItem title="Chats" link="/chats" />
+          <NavItem title="Dashboard" link="/" />
+          <NavItem title="Danışanlar" link="/customers" />
+          <NavItem title="Mesajlar" link="/chats" />
         </div>
       </div>
       <div className="first_in_right flex justify-center items-center">

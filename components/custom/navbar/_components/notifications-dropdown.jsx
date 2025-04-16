@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import api, { currentBaseUrl } from "@/lib/api";
+import CircleLoader from "../../circle-loader";
 
 export default function NotificationsDropdown() {
   const [notifications, setNotifications] = useState([]);
@@ -16,7 +17,7 @@ export default function NotificationsDropdown() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const eventSource = new EventSource(`${currentBaseUrl}sse`);
+    const eventSource = new EventSource(`${currentBaseUrl}notifications/sse`);
     eventSource.onmessage = (event) => {
       try {
         fetchNotifications().then(() => {
@@ -41,9 +42,7 @@ export default function NotificationsDropdown() {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const response = await api.get(
-        "notification/get-notifications?clinic_id=yasinakgul_bakirkoy",
-      );
+      const response = await api.get("notifications");
       setNotifications(response.data.data);
     } catch (error) {
       setError(error);
@@ -56,7 +55,7 @@ export default function NotificationsDropdown() {
     fetchNotifications();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <CircleLoader />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <DropdownMenu>

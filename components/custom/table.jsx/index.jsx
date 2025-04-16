@@ -192,7 +192,7 @@ export function DataTable({
             </TableBody>
           )}
 
-          {!isLoading && (
+          {!isLoading && table && data?.length > 0 && (
             <TableBody className="animate-fade-in dark:bg-black dark:text-white">
               {(table?.getRowModel()?.rows?.length ?? 0) > 0 ? (
                 table?.getRowModel()?.rows?.map((row) => (

@@ -1,87 +1,67 @@
-// import ChatMessages from "@/components/custom/chat-messages";
-// import { DataTable } from "@/components/custom/table.jsx";
-// import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import ChatMessages from "@/components/custom/chat-messages";
+import { DataTable } from "@/components/custom/table.jsx";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useChats from "@/hooks/data/use-chats";
 import { useState } from "react";
-// import { useEffect, useState } from "react";
 
-// const tableColumns = [
-//   {
-//     id: "profile_pic",
-//     accessorKey: "profile_pic",
-//     header: "",
-//     cell: ({ row }) => {
-//       const profilePic = row?.getValue("profile_pic");
-//       const channel = row?.original?.channel;
-//       return (
-//         <div className="relative max-w-min">
-//           <Avatar className="w-10 h-10 relative">
-//             <AvatarImage src={profilePic} />
-//           </Avatar>
-//           <Avatar className="w-3 h-3 rounded-sm absolute top-0 right-0">
-//             <AvatarImage
-//               src={`/assets/channel_logo/${channel?.toLowerCase()}.png`}
-//             />
-//           </Avatar>
-//         </div>
-//       );
-//     },
-//   },
-//   {
-//     id: "full_name",
-//     accessorKey: "full_name",
-//     header: "Ad Soyad",
-//   },
+const tableColumns = [
+  {
+    id: "profile_pic",
+    accessorKey: "profile_pic",
+    header: "",
+    cell: ({ row }) => {
+      const profilePic = row?.getValue("profile_pic");
+      const channel = row?.original?.channel;
+      return (
+        <div className="relative max-w-min">
+          <Avatar className="w-10 h-10 relative">
+            <AvatarImage src={profilePic} />
+          </Avatar>
+          <Avatar className="w-3 h-3 rounded-sm absolute top-0 right-0">
+            <AvatarImage
+              src={`/assets/channel_logo/${channel?.toLowerCase()}.png`}
+            />
+          </Avatar>
+        </div>
+      );
+    },
+  },
+  {
+    id: "full_name",
+    accessorKey: "full_name",
+    header: "Ad Soyad",
+  },
 
-//   {
-//     id: "phone",
-//     accessorKey: "phone",
-//     header: "Telefon",
-//     cell: ({ row }) => {
-//       const phone = row?.getValue("phone");
-//       return phone ? (
-//         phone
-//       ) : (
-//         <Badge className="font-bold" variant="secondary">
-//           Bilinmiyor
-//         </Badge>
-//       );
-//     },
-//   },
-// ];
+  {
+    id: "phone",
+    accessorKey: "phone",
+    header: "Telefon",
+    cell: ({ row }) => {
+      const phone = row?.getValue("phone");
+      return phone ? (
+        phone
+      ) : (
+        <Badge className="font-bold" variant="secondary">
+          Bilinmiyor
+        </Badge>
+      );
+    },
+  },
+];
 
 export default function Chats() {
-  // const [users, setUsers] = useState([]);
-  // const [usersLoading, setUsersLoading] = useState(true);
-  // const [selectedUser, setselectedUser] = useState(null);
-  // const [userError, setUserError] = useState(null);
-  // const fetchRecentChats = () => {
-  //   setUsersLoading(true);
-  //   // Fetching recently contacted users.
-  //   fetch("/api/dashboard/chats/get-recent-chats")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setUsers(data?.data);
+  const [selectedUser, setselectedUser] = useState(null);
 
-  //       setUsersLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setUserError(err.message ?? err);
-  //       setUsersLoading(false);
-  //     });
-  // };
+  const { data, error, isFetching } = useChats();
 
-  // useEffect(() => {
-  //   fetchRecentChats();
-  // }, []);
-
-  // const [page, setPage] = useState(0);
-  // const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
-  // const [currentChannel, setCurrentChannel] = useState("instagram");
+  const [currentChannel, setCurrentChannel] = useState("instagram");
 
   const [channel, setChannel] = useState("instagram");
 
@@ -111,7 +91,7 @@ export default function Chats() {
           </div>
         </CardHeader>
         <CardContent>
-          {/* {userError && <p>{userError}</p>}
+          {error ? <p>{error.message}</p> : <></>}
           <DataTable
             onRowClick={(data) => {
               setselectedUser(data);
@@ -126,18 +106,18 @@ export default function Chats() {
             }}
             isServerSide={false}
             isPaginationActive
-            isLoading={usersLoading}
-            data={users}
+            isLoading={isFetching}
+            data={data}
             columns={tableColumns}
-          /> */}
+          />
         </CardContent>
       </Card>
       <div className="col-span-5 max-h-[95.5vh]">
-        {/* <ChatMessages
+        <ChatMessages
           chatUser={selectedUser}
           messages={selectedUser?.channels?.[currentChannel].messages}
           channel={currentChannel}
-        /> */}
+        />
       </div>
     </div>
   );

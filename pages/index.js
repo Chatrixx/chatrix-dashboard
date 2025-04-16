@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import DatePickerWithRange from "@/components/custom/date-range-picker";
 import RatioPieChart from "@/components/custom/pie-chart";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ChatsChart from "@/components/custom/chart";
 import { tr } from "date-fns/locale";
 
@@ -12,8 +12,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import Image from "next/image";
-import api from "@/lib/api";
-import { CHANNELS } from "@/constants/channels";
+
+import CircleLoader from "@/components/custom/circle-loader";
+import useAnalytics from "@/hooks/data/use-analytics";
 
 export default function Home() {
   const [groupBy, setGroupBy] = useState("day");
@@ -42,34 +43,14 @@ export default function Home() {
     });
   }, [date, presets]);
 
-  const [analytics, setAnalytics] = useState(null);
-
-  const [analyticsLoading, setAnalyticsLoading] = useState(false);
-  const [analyticsError, setAnalyticsError] = useState(null);
-
-  const fetchAnalytics = useCallback(async () => {
-    try {
-      setAnalyticsLoading(true);
-      setAnalyticsError(null);
-      const res = await api.get("/dashboard/analytics", {
-        params: {
-          startDate: date.from,
-          endDate: date.to,
-          channel: CHANNELS.INSTAGRAM,
-          groupBy,
-        },
-      });
-      setAnalytics(res.data);
-    } catch (error) {
-      setAnalyticsError(error);
-    } finally {
-      setAnalyticsLoading(false);
-    }
-  }, [date, groupBy]);
-
-  useEffect(() => {
-    fetchAnalytics();
-  }, [fetchAnalytics]);
+  const {
+    data: analytics,
+    isLoading: analyticsLoading,
+    isError: analyticsError,
+  } = useAnalytics({
+    date,
+    groupBy,
+  });
 
   useEffect(() => {
     if (preset && preset.value === "this-year") {
@@ -88,7 +69,7 @@ export default function Home() {
           dateRangeString={dateRangeString}
         />
       </div>
-      {analyticsLoading && <p>Loading...</p>}
+      {analyticsLoading && <CircleLoader />}
       {!analyticsLoading && !analyticsError && analytics && (
         <div className="grid grid-cols-12 gap-4 animate-fade-in">
           <div className="grid grid-rows-12 col-span-2 gap-4 h-full">
@@ -107,7 +88,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 place-items-baseline flex-wrap">
                 <h3 className="text-4xl font-semibold mt-2">
-                  {analytics.data.total_messengers}
+                  {analytics.data?.total_messengers}
                 </h3>
                 <Badge className="border-[0.5px] border-dashed border-teal-700/20 outline-1 flex items-center gap-1 pointer-events-none bg-gradient-to-tr from-teal-50 to-teal-50 text-teal-900">
                   <ArrowUp size={14} /> 12%
@@ -154,15 +135,15 @@ export default function Home() {
             <RatioPieChart
               dateRangeString={dateRangeString}
               data={{
-                total: analytics.data.total_messengers,
-                total_phone_numbers: analytics.data.total_phone_numbers_given,
-                ratio: analytics.data.total_phone_ratio,
+                total: analytics.data?.total_messengers,
+                total_phone_numbers: analytics.data?.total_phone_numbers_given,
+                ratio: analytics.data?.total_phone_ratio,
               }}
             />
           </div>
           <div className="col-span-6">
             <ChatsChart
-              data={analytics.data.data_series.map((serie) => ({
+              data={analytics.data?.data_series.map((serie) => ({
                 day: serie.date.split("-")[2],
                 chats: serie.totalMessengers,
                 phoneNumbers: serie.totalPhoneNumbersGiven,

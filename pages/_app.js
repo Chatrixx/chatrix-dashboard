@@ -16,7 +16,9 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <main className={`${GeistFont.className} font-sans bg-[#fcfdff]`}>
+      <main
+        className={`${GeistFont.className} font-sans bg-[#fcfdff] min-h-screen`}
+      >
         <AppNavbar />
         <div className="w-full px-10 py-6 max-lg:px-6 max-md:px-4">
           <Component {...pageProps} />

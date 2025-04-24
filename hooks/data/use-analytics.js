@@ -1,11 +1,12 @@
 import { CHANNELS } from "@/constants/channels";
-import api from "@/lib/api";
+import api from "@/api/_axios";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
+import ENDPOINTS from "@/api/endpoints";
 
 export default function useAnalytics({ date, groupBy }) {
   const fetchAnalytics = useCallback(async () => {
-    return await api.get("/analytics", {
+    return await api.get(ENDPOINTS.ANALYTICS.GET_ANALYTICS, {
       params: {
         startDate: date.from,
         endDate: date.to,
@@ -20,9 +21,5 @@ export default function useAnalytics({ date, groupBy }) {
     queryFn: fetchAnalytics,
     enabled: !!date && !!groupBy,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    retry: false,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    cacheTime: 1000 * 60 * 10, // 10 minutes
   });
 }

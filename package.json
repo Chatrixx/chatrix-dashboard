@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.475.0",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
@@ -38,6 +39,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.2.0",
     "recharts": "^2.15.1",
+    "sonner": "^2.0.3",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7"
   },

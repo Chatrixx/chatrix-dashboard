@@ -1,4 +1,3 @@
-import AppNavbar from "@/components/custom/navbar";
 import "@/styles/globals.css";
 import { Geist } from "next/font/google";
 
@@ -10,20 +9,23 @@ const GeistFont = Geist({
 });
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+import { AuthProvider } from "@/context/auth";
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((page) => page);
   return (
-    <QueryClientProvider client={queryClient}>
-      <main
-        className={`${GeistFont.className} font-sans bg-[#fcfdff] min-h-screen`}
-      >
-        <AppNavbar />
-        <div className="w-full px-10 py-6 max-lg:px-6 max-md:px-4">
-          <Component {...pageProps} />
-        </div>
-      </main>
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <Toaster />
+        <main
+          className={`${GeistFont.className} font-sans bg-[#fcfdff] min-h-screen`}
+        >
+          {getLayout(<Component {...pageProps} />)}
+        </main>
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }

@@ -5,10 +5,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/auth";
 import { LogOut, Menu, Settings, User, User2, UserCog } from "lucide-react";
 import Link from "next/link";
 
 export default function ProfileDropdown() {
+  const { logout } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,7 +25,10 @@ export default function ProfileDropdown() {
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive cursor-pointer">
+        <DropdownMenuItem
+          onClick={logout}
+          className="text-destructive cursor-pointer"
+        >
           <LogOut /> Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

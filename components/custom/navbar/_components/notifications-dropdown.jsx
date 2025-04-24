@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import api, { currentBaseUrl } from "@/lib/api";
+import api, { currentBaseUrl } from "@/api/_axios";
 import CircleLoader from "../../circle-loader";
 
 export default function NotificationsDropdown() {

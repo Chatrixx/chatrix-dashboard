@@ -1,6 +1,7 @@
 import CustomerCard from "@/components/custom/customer-card";
 import CustomerDetailCard from "@/components/custom/customer-detail-card";
 import DatePickerWithRange from "@/components/custom/date-range-picker";
+import MainLayout from "@/components/custom/layout/main-layout";
 import { useState } from "react";
 
 export default function Customers() {
@@ -53,9 +54,9 @@ export default function Customers() {
   };
 
   return (
-    <div className="space-y-4 p-4 w-full">
+    <div className="space-y-4 p-4 w-full animate-fade-in">
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-2xl font-semibold mb-6">Yazan Kullanıcılar</h2>
+        <h2 className="text-2xl font-semibold mb-6">Danışanlar</h2>
         <DatePickerWithRange />
       </div>
       <div className="flex gap-2">
@@ -88,3 +89,5 @@ export default function Customers() {
     </div>
   );
 }
+
+Customers.getLayout = (children) => <MainLayout>{children}</MainLayout>;

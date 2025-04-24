@@ -15,6 +15,7 @@ import Image from "next/image";
 
 import CircleLoader from "@/components/custom/circle-loader";
 import useAnalytics from "@/hooks/data/use-analytics";
+import MainLayout from "@/components/custom/layout/main-layout";
 
 export default function Home() {
   const [groupBy, setGroupBy] = useState("day");
@@ -156,3 +157,5 @@ export default function Home() {
     </div>
   );
 }
+
+Home.getLayout = (children) => <MainLayout>{children}</MainLayout>;

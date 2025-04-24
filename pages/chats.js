@@ -1,4 +1,5 @@
 import ChatMessages from "@/components/custom/chat-messages";
+import MainLayout from "@/components/custom/layout/main-layout";
 import { DataTable } from "@/components/custom/table.jsx";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -66,7 +67,7 @@ export default function Chats() {
   const [channel, setChannel] = useState("instagram");
 
   return (
-    <div className="w-full grid grid-cols-12 h-full gap-x-4">
+    <div className="w-full grid grid-cols-12 h-full gap-x-4 animate-fade-in">
       <Card className="!h-full col-span-7">
         <CardHeader>
           <div className="flex items-center justify-between w-full">
@@ -122,3 +123,5 @@ export default function Chats() {
     </div>
   );
 }
+
+Chats.getLayout = (children) => <MainLayout>{children}</MainLayout>;

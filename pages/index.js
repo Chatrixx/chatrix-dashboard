@@ -84,7 +84,7 @@ export default function Home() {
                   className="w-5 h-5"
                   width={30}
                   height={30}
-                  src="/instagram.png"
+                  src="/channel_images/instagram.png"
                 />
               </div>
               <div className="flex gap-4 place-items-baseline flex-wrap">
@@ -106,7 +106,7 @@ export default function Home() {
                   className="w-5 h-5"
                   width={30}
                   height={30}
-                  src="/instagram.png"
+                  src="/channel_images/instagram.png"
                 />
               </div>
               <div className="flex gap-4 place-items-baseline flex-wrap">
@@ -126,7 +126,7 @@ export default function Home() {
                   className="w-5 h-5"
                   width={30}
                   height={30}
-                  src="/instagram.png"
+                  src="/channel_images/instagram.png"
                 />
               </div>
               <h3 className="text-4xl font-semibold mt-2">213</h3>

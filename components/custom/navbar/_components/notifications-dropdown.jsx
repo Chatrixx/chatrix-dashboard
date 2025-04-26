@@ -10,14 +10,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import api, { currentBaseUrl } from "@/api/_axios";
 import CircleLoader from "../../circle-loader";
+import { useAuth } from "@/context/auth";
 
 export default function NotificationsDropdown() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
-    const eventSource = new EventSource(`${currentBaseUrl}notifications/sse`);
+    const eventSource = new EventSource(
+      `${currentBaseUrl}sse?id=${user?.userId}`,
+    );
     eventSource.onmessage = (event) => {
       try {
         fetchNotifications().then(() => {

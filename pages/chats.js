@@ -1,53 +1,48 @@
 import ChatMessages from "@/components/custom/chat-messages";
 import MainLayout from "@/components/custom/layout/main-layout";
 import { DataTable } from "@/components/custom/table.jsx";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useChats from "@/hooks/data/use-chats";
+import { getReadableDate } from "@/util/date";
 import { useState } from "react";
 
 const tableColumns = [
   {
-    id: "profile_pic",
-    accessorKey: "profile_pic",
-    header: "",
+    id: "full_name",
+    accessorKey: "full_name",
+    header: "Danışan",
     cell: ({ row }) => {
-      const profilePic = row?.getValue("profile_pic");
-      const channel = row?.original?.channel;
+      const name = row?.getValue("full_name");
       return (
-        <div className="relative max-w-min">
-          <Avatar className="w-10 h-10 relative">
-            <AvatarImage src={profilePic} />
+        <div className="flex items-center gap-4">
+          <Avatar>
+            <AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <Avatar className="w-3 h-3 rounded-sm absolute top-0 right-0">
-            <AvatarImage
-              src={`/assets/channel_logo/${channel?.toLowerCase()}.png`}
-            />
-          </Avatar>
+          <span className="min-w-max">{name}</span>
         </div>
       );
     },
   },
-  {
-    id: "full_name",
-    accessorKey: "full_name",
-    header: "Ad Soyad",
-  },
 
   {
-    id: "phone",
-    accessorKey: "phone",
-    header: "Telefon",
+    id: "lastMessage",
+    accessorKey: "lastMessage",
+    header: "Son Mesaj",
     cell: ({ row }) => {
-      const phone = row?.getValue("phone");
-      return phone ? (
-        phone
-      ) : (
-        <Badge className="font-bold" variant="secondary">
-          Bilinmiyor
-        </Badge>
+      const lastMessage = row?.getValue("lastMessage");
+      return (
+        <div className="flex items-center justify-between gap-4">
+          <Badge
+            className="overflow-x-hidden text-nowrap"
+            variant="secondary"
+          >{`${lastMessage?.content.slice(0, 72)} ${lastMessage.content.length > 72 ? "..." : ""}`}</Badge>
+          <p className="text-muted-foreground">
+            {getReadableDate(lastMessage.timestamp)}
+          </p>
+        </div>
       );
     },
   },
@@ -55,8 +50,9 @@ const tableColumns = [
 
 export default function Chats() {
   const [selectedUser, setselectedUser] = useState(null);
+  const [channel, setChannel] = useState("instagram");
 
-  const { data, error, isFetching } = useChats();
+  const { data, error, isFetching } = useChats({ channel });
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -64,11 +60,11 @@ export default function Chats() {
   // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
   const [currentChannel, setCurrentChannel] = useState("instagram");
 
-  const [channel, setChannel] = useState("instagram");
-
   return (
     <div className="w-full grid grid-cols-12 h-full gap-x-4 animate-fade-in">
-      <Card className="!h-full col-span-7">
+      <Card
+        className={`!h-full ${selectedUser ? "col-span-7" : "col-span-12"} transition-all duration-200 max-h-min`}
+      >
         <CardHeader>
           <div className="flex items-center justify-between w-full">
             <CardTitle>Son Mesajlar</CardTitle>
@@ -113,10 +109,12 @@ export default function Chats() {
           />
         </CardContent>
       </Card>
-      <div className="col-span-5 max-h-[95.5vh]">
+      <div
+        className={`${selectedUser ? "col-span-5 animate-fade-in" : "col-span-0 hidden"} h-[80vh] transition-all duration-200`}
+      >
         <ChatMessages
           chatUser={selectedUser}
-          messages={selectedUser?.channels?.[currentChannel].messages}
+          messages={selectedUser?.chats}
           channel={currentChannel}
         />
       </div>

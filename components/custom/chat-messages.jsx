@@ -1,14 +1,27 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getReadableDate } from "@/util/date";
+import { ExternalLink, MoreVertical, Phone, User, Video } from "lucide-react";
 import Image from "next/image";
+import { Button } from "../ui/button";
+import { useEffect, useRef } from "react";
+import { DropdownMenu } from "../ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const SenderMessage = ({
   sender = { profile_pic: "", full_name: "" },
   message,
 }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 ml-auto">
       <div className="flex flex-col gap-1 items-end ml-12">
         <div className="bg-muted p-3 rounded-lg rounded-tr-none text-sm">
           <p className="">{message?.content}</p>
@@ -52,26 +65,68 @@ const ReceiverMessage = ({
 };
 
 export default function ChatMessages({ chatUser, messages, channel }) {
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [chatUser]);
   return (
-    <Card className="w-full h-full max-h-full overflow-y-scroll">
-      <CardHeader>
-        <CardTitle>Mesajlar</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        {chatUser && (
-          <div className="flex flex-col items-center justify-center mb-6">
+    <Card
+      className="w-full h-full max-h-full overflow-y-scroll"
+      ref={messagesEndRef}
+    >
+      <div className="border-b p-4 sticky top-0 bg-background z-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
             <div className="relative">
-              <Avatar className="w-16 h-16">
-                <AvatarImage src={chatUser?.profile_pic} />
+              <Avatar className="h-12 w-12">
+                <AvatarImage
+                  src={chatUser?.profile_pic}
+                  alt={chatUser?.full_name}
+                />
+                <AvatarFallback>
+                  {chatUser?.full_name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </AvatarFallback>
               </Avatar>
-              <Avatar className="w-5 h-5 rounded-sm absolute top-0 right-0">
-                <AvatarImage src={`/assets/channel_logo/${channel}.png`} />
-              </Avatar>
+
+              <div className="absolute bottom-0 right-0 ">
+                <Avatar className="w-3 h-3 rounded-sm ring-2 ring-white">
+                  <AvatarImage src={`/channel_images/${channel}.png`} />
+                </Avatar>
+              </div>
             </div>
-            <p className="mt-4">{chatUser?.full_name}</p>
+            <div>
+              <h2 className="text-lg font-semibold">{chatUser?.full_name}</h2>
+              <div className="flex items-center space-x-2 text-sm text-gray-500">
+                <span>{chatUser?.chats?.length} mesaj</span>
+              </div>
+            </div>
           </div>
-        )}
-        <div className=" grid gap-6">
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" title="Ara">
+              <Phone className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" title="Görüntülü Arama">
+              <Video className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" asChild title="Profile Git">
+              <a href={`/profile/${chatUser?.id}`}>
+                <User className="h-5 w-5" />
+              </a>
+            </Button>
+            <Button variant="ghost" size="icon">
+              <MoreVertical className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      <CardContent className="p-6">
+        <div className="grid gap-6">
           {messages?.map((message, index) => {
             const isSender = message.role === "agent";
             return isSender ? (

@@ -24,10 +24,7 @@ export function getReadableDate(dateInput) {
     return `Dün ${postDate.toLocaleTimeString("tr-TR", options)}`;
   } else {
     const dateOptions = { day: "numeric", month: "long", year: "numeric" };
-    return `${postDate.toLocaleDateString(
-      "tr-TR",
-      dateOptions,
-    )} ${postDate.toLocaleTimeString("tr-TR", options)}`;
+    return `${postDate.toLocaleDateString("tr-TR", dateOptions)}`;
   }
 }
 

@@ -25,9 +25,14 @@ export default function LoginPage() {
       toast("Lütfen gerekli alanları doldurunuz.");
       return;
     }
-    setLoginLoading(true);
-    await login({ email, password });
-    setLoginLoading(false);
+    try {
+      setLoginLoading(true);
+      await login({ email, password });
+    } catch {
+      setLoginLoading(false);
+    } finally {
+      setLoginLoading(false);
+    }
   };
 
   return (

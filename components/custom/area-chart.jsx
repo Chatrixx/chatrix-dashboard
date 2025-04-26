@@ -20,8 +20,8 @@ export default function ChatsAreaChart({ data }) {
             <stop offset="95%" stopColor="#2A87F8" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#37d49a" stopOpacity={0.4} />
-            <stop offset="95%" stopColor="#37d49a" stopOpacity={0} />
+            <stop offset="5%" stopColor="#3A87F8" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="#3A87F8" stopOpacity={0} />
           </linearGradient>
         </defs>
         <XAxis
@@ -48,14 +48,14 @@ export default function ChatsAreaChart({ data }) {
         <Area
           type="natural"
           dataKey="chats"
-          stroke="#8884d8"
+          stroke="#8884d844"
           fillOpacity={1}
           fill="url(#colorUv)"
         />
         <Area
           type="natural"
           dataKey="phoneNumbers"
-          stroke="#26996f"
+          stroke="#3A87F844"
           fillOpacity={1}
           fill="url(#colorPv)"
         />

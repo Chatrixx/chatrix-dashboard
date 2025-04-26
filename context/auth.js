@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
         const res = await api.get(ENDPOINTS.USERS.GET_ME);
 
         setUser(res.data);
-        router.replace("/");
+        if (router.pathname.includes("auth")) router.replace("/");
       } catch {
         setUser(null);
         Cookies.remove("authToken");

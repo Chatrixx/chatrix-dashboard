@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }) {
       <QueryClientProvider client={queryClient}>
         <Toaster />
         <main
-          className={`${GeistFont.className} font-sans bg-[#fcfdff] min-h-screen`}
+          className={`${GeistFont.className} font-sans bg-[#FBFDFE] min-h-screen`}
         >
           {getLayout(<Component {...pageProps} />)}
         </main>

@@ -3,6 +3,7 @@ const ROOTS = {
   USERS: "/users",
   ANALYTICS: "/analytics",
   CHATS: "/chats",
+  TEST: "/test",
 };
 
 const ENDPOINTS = {
@@ -17,6 +18,10 @@ const ENDPOINTS = {
   },
   CHATS: {
     GET_CHATS: ROOTS.CHATS,
+  },
+  TEST: {
+    SEND_MESSAGE: `${ROOTS.TEST}/send_message`,
+    GET_ALL_MESSAGES: `${ROOTS.TEST}/get_all_messages`,
   },
 };
 

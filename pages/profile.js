@@ -1,5 +1,5 @@
 import MainLayout from "@/components/custom/layout/main-layout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -27,31 +27,31 @@ export default function ProfilePage() {
   ];
   const [activeTab, setActiveTab] = useState(tabs[0]);
   return (
-    <div>
-      <Tabs
-        onValueChange={(val) => {
-          setActiveTab(tabs.find((t) => t.value === val));
-        }}
-        value={activeTab.value}
-        defaultValue="chat-test"
-        className="ml-auto"
-      >
-        <div className="flex">
-          <div className="flex items-center gap-2 mb-4 px-1">
-            <h1 className="text-3xl font-bold">{activeTab.title}</h1>
-            {activeTab.tooltip && (
-              <TooltipProvider>
-                <Tooltip delayDuration={0}>
-                  <TooltipContent className="max-w-72 p-2">
-                    {activeTab.tooltip}
-                  </TooltipContent>
-                  <TooltipTrigger asChild>
-                    <Info size={20} className="cursor-pointer" />
-                  </TooltipTrigger>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-          </div>
+    <div className="flex flex-col h-full max-h-full gap-4">
+      <div className="flex justify-between items-center w-full max-h-max">
+        <div className="flex items-center gap-2 mb-4 px-1">
+          <h1 className="text-3xl font-bold">{activeTab.title}</h1>
+          {activeTab.tooltip && (
+            <TooltipProvider>
+              <Tooltip delayDuration={0}>
+                <TooltipContent className="max-w-72 p-2">
+                  {activeTab.tooltip}
+                </TooltipContent>
+                <TooltipTrigger asChild>
+                  <Info size={20} className="cursor-pointer" />
+                </TooltipTrigger>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
+        <Tabs
+          onValueChange={(val) => {
+            setActiveTab(tabs.find((t) => t.value === val));
+          }}
+          value={activeTab.value}
+          defaultValue="chat-test"
+          className="flex flex-col h-full"
+        >
           <TabsList className="ml-auto">
             {tabs.map((t) => (
               <TabsTrigger key={t.value} value={t.value}>
@@ -59,11 +59,11 @@ export default function ProfilePage() {
               </TabsTrigger>
             ))}
           </TabsList>
-        </div>
-        <TabsContent value="chat-test">
-          <TestChatView />
-        </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
+      <div className="basis-full flex-1 h-full max-h-full overflow-y-hidden">
+        {activeTab.value === "chat-test" && <TestChatView />}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bell, PhoneCall } from "lucide-react";
+import { ArrowRight, Bell, PhoneCall } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -11,6 +11,7 @@ import {
 import api, { currentBaseUrl } from "@/api/_axios";
 import CircleLoader from "../../circle-loader";
 import { useAuth } from "@/context/auth";
+import { Separator } from "@/components/ui/separator";
 
 export default function NotificationsDropdown() {
   const [notifications, setNotifications] = useState([]);
@@ -73,7 +74,7 @@ export default function NotificationsDropdown() {
               {notifications.length}
             </Badge>
           )}
-          <Bell strokeWidth={1.5} className="text-muted-foreground" />
+          <Bell strokeWidth={1.5} />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-4">
@@ -107,6 +108,11 @@ export default function NotificationsDropdown() {
               </div>
             </div>
           </div>
+        </DropdownMenuItem>
+        <Separator />
+        <DropdownMenuItem className="cursor-pointer flex items-center justify-between">
+          <span>Tümünü Gör</span>
+          <ArrowRight />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

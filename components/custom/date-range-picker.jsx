@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import { ChevronDown } from "lucide-react";
+import { Calendar1, ChevronDown } from "lucide-react";
 import { tr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,22 +20,27 @@ export function DatePickerWithRange({
   className,
   onDateChange,
   dateRangeString,
+  renderTrigger,
 }) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant={"secondary"}
-            className={cn(
-              "flex items-center gap-2 bg-primary-foreground border border-border/25 shadow rounded-xl",
-              !date && "text-muted-foreground",
-            )}
-          >
-            <ChevronDown />
-            <span>{dateRangeString}</span>
-          </Button>
+          {renderTrigger ? (
+            renderTrigger(dateRangeString)
+          ) : (
+            <Button
+              id="date"
+              variant={"secondary"}
+              className={cn(
+                "flex items-center gap-2 bg-card   border border-border/25 shadow",
+                !date && "text-muted-foreground",
+              )}
+            >
+              <ChevronDown />
+              <span>{dateRangeString}</span>
+            </Button>
+          )}
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 flex " align="start">
           <PresetsList setDate={onDateChange} selectedPreset={preset} />

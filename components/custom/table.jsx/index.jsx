@@ -46,6 +46,7 @@ export function DataTable({
   autoCapitalizeCells = true,
   columnOptions = [],
   onRowClick,
+  rowClass = "",
 }) {
   const modifiedColumns = columns.map((column) => {
     if (
@@ -204,7 +205,8 @@ export function DataTable({
                     data-state={row.getIsSelected() && "selected"}
                     className={`text-[12px] !min-h-[41px] ${
                       autoCapitalizeCells ? "capitalize " : " "
-                    }`}
+                    } ${rowClass ?? ""}
+                    `}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell

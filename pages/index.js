@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { getDateRangePresets, getDateRangeString } from "@/util/date";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
 
 import CircleLoader from "@/components/custom/circle-loader";
@@ -62,12 +62,24 @@ export default function Home() {
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-2xl font-semibold mb-6"></h2>
         <DatePickerWithRange
           preset={preset}
           date={date}
           onDateChange={setDate}
           dateRangeString={dateRangeString}
+          renderTrigger={(val) => {
+            return (
+              <div
+                variant="ghost"
+                className="pl-2 cursor-pointer hover:opacity-75"
+              >
+                <div className="flex gap-1.5 items-center">
+                  <h1 className="text-3xl font-bold">{val}</h1>
+                  <ChevronDown size={24} strokeWidth={2.5} />
+                </div>
+              </div>
+            );
+          }}
         />
       </div>
       {analyticsLoading && <CircleLoader />}

@@ -38,7 +38,7 @@ const tableColumns = [
           <Badge
             className="overflow-x-hidden text-nowrap"
             variant="secondary"
-          >{`${lastMessage?.content.slice(0, 72)} ${lastMessage.content.length > 72 ? "..." : ""}`}</Badge>
+          >{`${lastMessage?.content.slice(0, 72)} ${lastMessage?.content?.length > 72 ? "..." : ""}`}</Badge>
           <p className="text-muted-foreground">
             {getReadableDate(lastMessage.timestamp)}
           </p>
@@ -93,6 +93,7 @@ export default function Chats() {
             onRowClick={(data) => {
               setselectedUser(data);
             }}
+            rowClass="cursor-pointer"
             pagination={{
               onPageChange: (pageIndex) => {
                 setPage(pageIndex);

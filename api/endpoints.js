@@ -1,23 +1,27 @@
 const ROOTS = {
   AUTH: "/auth",
-  USERS: "/users",
+  ME: "/me",
   ANALYTICS: "/analytics",
   CHATS: "/chats",
   TEST: "/test",
+  CLIENTS: "/clients",
 };
 
 const ENDPOINTS = {
   AUTH: {
     LOGIN: `${ROOTS.AUTH}/signin`,
   },
-  USERS: {
-    GET_ME: `${ROOTS.USERS}/me`,
+  ME: {
+    GET_ME: `${ROOTS.ME}/getMe`,
   },
   ANALYTICS: {
     GET_ANALYTICS: ROOTS.ANALYTICS,
   },
   CHATS: {
     GET_CHATS: ROOTS.CHATS,
+  },
+  CLIENTS: {
+    GET_CLIENTS: `${ROOTS.CLIENTS}`,
   },
   TEST: {
     SEND_MESSAGE: `${ROOTS.TEST}/send_message`,

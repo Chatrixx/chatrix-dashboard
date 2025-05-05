@@ -11,7 +11,7 @@ export default function useChats({ channel }) {
           channel,
         },
       })
-    ).data.map((user) => {
+    ).data?.map((user) => {
       const messages = user.chats;
       const lastMessage = messages[messages.length - 1];
       return {

@@ -33,7 +33,7 @@ export default function AppSidebar() {
     {
       icon: Users,
       label: "Danışanlar",
-      href: "/customers",
+      href: "/clients",
     },
     {
       icon: MessageSquare,

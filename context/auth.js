@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       setAuthToken(token);
       try {
-        const res = await api.get(ENDPOINTS.USERS.GET_ME);
+        const res = await api.get(ENDPOINTS.ME.GET_ME);
 
         setUser(res.data);
         if (router.pathname.includes("auth")) router.replace("/");
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       Cookies.set("authToken", token);
       setAuthToken(token);
-      const userRes = await api.get(ENDPOINTS.USERS.GET_ME);
+      const userRes = await api.get(ENDPOINTS.ME.GET_ME);
 
       setUser(userRes.data);
       router.replace("/");

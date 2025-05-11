@@ -1,16 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Banknote,
-  CircleEllipsis,
-  CreditCard,
-  FileText,
-  SendToBack,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import React, { useEffect } from "react";
+import { Banknote, CircleEllipsis, CreditCard, SendToBack } from "lucide-react";
+import React from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { getReadableDate } from "@/util/date";
 
 export default function InvoiceHistoryView({ customer }) {
   const exportToExcel = () => {
@@ -83,7 +77,7 @@ export default function InvoiceHistoryView({ customer }) {
                 {customer.payment_info.payment_history.map((payment, index) => (
                   <tr key={payment.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {payment.date.toLocaleString("tr-TR")}
+                      {getReadableDate(payment.date)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {payment.amount.toLocaleString("tr-TR", {

@@ -33,6 +33,9 @@ import InvoiceHistoryView from "@/views/clientDetails/invoice-history-view";
 import ServicePriceHistoryView from "@/views/clientDetails/service-price-history-view";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import CurrentTreatmentsView from "@/views/clientDetails/current-treatments-view";
+import CompletedTreatmentsView from "@/views/clientDetails/completed-treatments-view";
+import TreatmentHistoryView from "@/views/clientDetails/treatment-history-view";
 
 // Mock data based on the schema
 const customerData = {
@@ -161,58 +164,69 @@ const customerData = {
     ],
     treatments: [
       {
+        id: "1",
         name: "Diş Beyazlatma",
         date: "2023-10-16T09:00:00Z",
         status: "Planlandı",
         price: 1000,
+        description: "description test",
+      },
+      {
+        id: "2",
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Planlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Planlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Planlandı",
+        price: 1500,
+        description: "description test",
       },
       {
         name: "Implant",
         date: "2023-11-23",
         status: "Tamamlandı",
         price: 1500,
+        description: "description test",
       },
       {
         name: "Implant",
         date: "2023-11-23",
         status: "Tamamlandı",
         price: 1500,
+        description: "description test",
       },
       {
         name: "Implant",
         date: "2023-11-23",
         status: "Tamamlandı",
         price: 1500,
+        description: "description test",
       },
       {
         name: "Implant",
         date: "2023-11-23",
         status: "Tamamlandı",
         price: 1500,
+        description: "description test",
       },
       {
         name: "Implant",
         date: "2023-11-23",
         status: "Tamamlandı",
         price: 1500,
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
+        description: "description test",
       },
     ],
   },
@@ -694,173 +708,13 @@ export default function CustomerDetail() {
         <TabsContent value="treatments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Current Treatments */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Mevcut Tedaviler</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.portfolio.treatments
-                    .filter((treatment) => treatment.status !== "Tamamlandı")
-                    .map((treatment, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                          <Clock className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">{treatment.name}</h4>
-                              <p className="text-sm text-gray-500">
-                                {treatment.date}
-                              </p>
-                            </div>
-                            <Badge variant="outline">{treatment.status}</Badge>
-                          </div>
-                          <div className="mt-3 flex space-x-2">
-                            <Button variant="outline" size="sm">
-                              Detaylar
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-200 hover:bg-green-50"
-                            >
-                              Tamamlandı Olarak İşaretle
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  {customer.portfolio.treatments.filter(
-                    (treatment) => treatment.status !== "Tamamlandı",
-                  ).length === 0 && (
-                    <div className="text-center py-6 text-gray-500">
-                      Mevcut tedavi bulunmamaktadır.
-                    </div>
-                  )}
-                </div>
-                <Button variant="outline" className="w-full mt-4">
-                  <Clock className="mr-2 h-4 w-4" />
-                  Yeni Tedavi Ekle
-                </Button>
-              </CardContent>
-            </Card>
+            <CurrentTreatmentsView customer={customer} />
 
             {/* Completed Treatments */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Tamamlanan Tedaviler</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.portfolio.treatments
-                    .filter((treatment) => treatment.status === "Tamamlandı")
-                    .map((treatment, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                          <Clock className="h-5 w-5 text-green-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">{treatment.name}</h4>
-                              <p className="text-sm text-gray-500">
-                                {treatment.date}
-                              </p>
-                            </div>
-                            <Badge className="bg-green-100 text-green-800">
-                              {treatment.status}
-                            </Badge>
-                          </div>
-                          <div className="mt-3">
-                            <Button variant="outline" size="sm">
-                              Detaylar
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  {customer.portfolio.treatments.filter(
-                    (treatment) => treatment.status === "Tamamlandı",
-                  ).length === 0 && (
-                    <div className="text-center py-6 text-gray-500">
-                      Tamamlanan tedavi bulunmamaktadır.
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <CompletedTreatmentsView customer={customer} />
 
-            {/* Treatment Details */}
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Tedavi Geçmişi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="relative">
-                  <div className="space-y-1">
-                    {customer.portfolio.treatments.map((treatment, index) => (
-                      <div key={index} className="flex gap-2">
-                        <div className="mt-1 min-h-max flex flex-col items-center">
-                          <div
-                            className={`h-4 w-4 rounded-full 
-                            ${
-                              treatment.status === "Tamamlandı"
-                                ? "bg-green-200"
-                                : ""
-                            }
-                            bg-gray-200 mb-2`}
-                          />
-                          <div
-                            className={`flex-grow w-0.5 
-                            ${
-                              treatment.status === "Tamamlandı"
-                                ? "bg-green-200"
-                                : ""
-                            }
-                            bg-gray-200`}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex flex-col md:flex-row md:items-center justify-between pb-2 border-b">
-                            <div>
-                              <h4 className="font-medium">{treatment.name}</h4>
-                              <p className="text-sm text-gray-500">
-                                {treatment.date}
-                              </p>
-                            </div>
-                            <Badge
-                              variant={
-                                treatment.status === "Tamamlandı"
-                                  ? "default"
-                                  : "outline"
-                              }
-                              className={`mt-2 md:mt-0 ${
-                                treatment.status === "Tamamlandı"
-                                  ? "bg-green-100 text-green-800"
-                                  : ""
-                              }`}
-                            >
-                              {treatment.status}
-                            </Badge>
-                          </div>
-                          <div className="mt-2 text-sm mb-4">
-                            <p>Tedavi notları burada görüntülenecektir.</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Treatment History */}
+            <TreatmentHistoryView customer={customer} />
           </div>
         </TabsContent>
 

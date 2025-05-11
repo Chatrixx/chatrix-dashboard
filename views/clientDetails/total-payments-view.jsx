@@ -1,10 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React, { useEffect, useState } from "react";
-import api from "@/api/_axios";
-import { toast } from "sonner";
+import React from "react";
 import { Loader2 } from "lucide-react";
 
 export default function TotalPaymentsView({ customer, isLoading }) {
+  // Todo: Backend total payment
   const { payment_history } = customer.payment_info;
   return (
     <Card>

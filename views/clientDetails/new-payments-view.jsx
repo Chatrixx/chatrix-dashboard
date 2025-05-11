@@ -1,3 +1,4 @@
+import api from "@/api/_axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -38,6 +39,7 @@ export default function NewPaymenstView({ customer }) {
         return;
       }
       // const res = await api.post("/payments", {
+      //   customerId:customer._id,
       //   paymentMethod,
       //   customPayment,
       //   paymentAmount,

@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { getReadableDate } from "@/util/date";
 
 export default function ServicePriceHistoryView({ customer }) {
   const { treatments } = customer.portfolio.treatments;
@@ -65,12 +66,7 @@ export default function ServicePriceHistoryView({ customer }) {
                 {customer.portfolio.treatments.map((treatment, index) => (
                   <tr key={treatment.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(treatment.date).toLocaleString("tr-TR", {
-                        timeZone: "Europe/Istanbul",
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
+                      {getReadableDate(treatment.date)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {treatment.name}

@@ -36,6 +36,7 @@ import { toast } from "sonner";
 import CurrentTreatmentsView from "@/views/clientDetails/current-treatments-view";
 import CompletedTreatmentsView from "@/views/clientDetails/completed-treatments-view";
 import TreatmentHistoryView from "@/views/clientDetails/treatment-history-view";
+import UpcomingAppointmentsView from "@/views/clientDetails/upcoming-appointments-view";
 
 // Mock data based on the schema
 const customerData = {
@@ -149,14 +150,21 @@ const customerData = {
     appointments: [
       {
         id: "apt1",
-        date: "2023-10-19T10:00:00Z",
+        date: "2025-05-12T10:00:00Z",
         type: "Danışma",
         status: "Onaylandı",
         notes: "Diş beyazlatma için ilk danışma",
       },
       {
         id: "apt2",
-        date: "2023-10-26T14:00:00Z",
+        date: "2025-05-17T14:00:00Z",
+        type: "Tedavi",
+        status: "Planlandı",
+        notes: "Diş beyazlatma işlemi",
+      },
+      {
+        id: "apt3",
+        date: "2025-05-17T14:00:00Z",
         type: "Tedavi",
         status: "Planlandı",
         notes: "Diş beyazlatma işlemi",
@@ -596,75 +604,9 @@ export default function CustomerDetail() {
         <TabsContent value="appointments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Upcoming Appointments */}
-            <Card className="md:col-span-1 max-h-min">
-              <CardHeader>
-                <CardTitle className="text-lg">Yaklaşan Randevular</CardTitle>
-                <CardDescription>
-                  Toplam: {customer.portfolio.appointmentCount} randevu
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.portfolio.appointments
-                    .filter((apt) => new Date(apt.date) >= new Date())
-                    .map((appointment) => (
-                      <div
-                        key={appointment.id}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                          <Calendar className="h-5 w-5 text-purple-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">
-                                {appointment.type}
-                              </h4>
-                              <p className="text-sm text-gray-500">
-                                {formatDate(appointment.date)}
-                              </p>
-                            </div>
-                            <Badge
-                              variant={
-                                appointment.status === "Onaylandı"
-                                  ? "default"
-                                  : "outline"
-                              }
-                            >
-                              {appointment.status}
-                            </Badge>
-                          </div>
+            <UpcomingAppointmentsView customer={customer} />
 
-                          {appointment.notes && (
-                            <p className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                              {appointment.notes}
-                            </p>
-                          )}
-                          <div className="mt-3 flex space-x-2">
-                            <Button variant="outline" size="sm">
-                              Düzenle
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-red-500 border-red-200 hover:bg-red-50"
-                            >
-                              İptal Et
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-                <Button className="w-full mt-4">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Yeni Randevu Ekle
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Treatment History */}
+            {/* Appointment History */}
             <Card className="md:col-span-2">
               <CardHeader>
                 <CardTitle className="text-lg">Randevu Geçmişi</CardTitle>

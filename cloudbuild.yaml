@@ -1,0 +1,37 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_WEB_APP_SERVICE}:${SHORT_SHA}',
+      '--build-arg', 'NEXT_PUBLIC_API_URL=https://${_API_SERVICE}-${PROJECT_NUMBER}.${_REGION}.run.app',
+      '--build-arg', 'NODE_ENV=${_NODE_ENV}',
+      '.'
+    ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_WEB_APP_SERVICE}:${SHORT_SHA}']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: [
+      'run', 'deploy', '${_WEB_APP_SERVICE}',
+      '--image', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_WEB_APP_SERVICE}:${SHORT_SHA}',
+      '--region', '${_REGION}',
+      '--platform', 'managed',
+      '--allow-unauthenticated',
+      '--port', '3000'
+    ]
+
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_WEB_APP_SERVICE}:${SHORT_SHA}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _REGION: europe-west1
+  _REPOSITORY: chatrix-containers
+  _API_SERVICE: chatrix-back
+  _WEB_APP_SERVICE: chatrix-front
+
+timeout: 1800s

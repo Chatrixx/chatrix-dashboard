@@ -19,7 +19,9 @@ COPY --from=builder --chown=nextjs:nextjs /app/public ./public
 
 USER nextjs
 
-ENV NODE_ENV=production
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
+
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 EXPOSE 3000

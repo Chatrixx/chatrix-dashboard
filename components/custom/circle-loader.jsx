@@ -3,8 +3,10 @@ import React from "react";
 
 export default function CircleLoader() {
   return (
-    <div className="flex items-center justify-center w-full py-4">
-      <Loader2 className="animate-spin text-teal-500" size={24} />
+    <div className="flex items-center justify-center w-full py-4 animate-fade-in">
+      <div className="animate-pulse">
+        <Loader2 className="animate-spin text-primary-foreground" size={24} />
+      </div>
     </div>
   );
 }

@@ -22,6 +22,7 @@ const ENDPOINTS = {
   },
   CLIENTS: {
     GET_CLIENTS: `${ROOTS.CLIENTS}`,
+    GET_CLIENT_BY_ID: (id) => `${ROOTS.CLIENTS}/${id}`,
   },
   TEST: {
     SEND_MESSAGE: `${ROOTS.TEST}/send_message`,

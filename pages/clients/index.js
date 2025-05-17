@@ -15,8 +15,8 @@ export default function Clients() {
     <div className="animate-fade-in w-full flex justify-center py-24 items-center gap-4">
       <SearchX className="text-muted-foreground" />
       <p className="text-muted-foreground">
-        Bu anahtar kelimelere uygun bir sonuç bulunamadı. Başka bir isimle
-        aramayı deneyin
+        Bu aramaya uygun bir sonuç bulunamadı. Başka bir anahtar kelime ile
+        deneyin.
       </p>
     </div>
   );
@@ -39,7 +39,7 @@ export default function Clients() {
     <div className="space-y-4 p-4 w-full animate-fade-in">
       <div className="w-full mb-4">
         <Input
-          placeholder="Bir danışan arayın.."
+          placeholder="Bir hastanın adını veya numarasını giriniz.."
           onChange={(e) => {
             setSearchTerm(e.target.value);
           }}

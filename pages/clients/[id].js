@@ -31,311 +31,17 @@ import TotalPaymentsView from "@/views/clientDetails/total-payments-view";
 import NewPaymenstView from "@/views/clientDetails/new-payments-view";
 import InvoiceHistoryView from "@/views/clientDetails/invoice-history-view";
 import ServicePriceHistoryView from "@/views/clientDetails/service-price-history-view";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
 import CurrentTreatmentsView from "@/views/clientDetails/current-treatments-view";
 import CompletedTreatmentsView from "@/views/clientDetails/completed-treatments-view";
 import TreatmentHistoryView from "@/views/clientDetails/treatment-history-view";
 import UpcomingAppointmentsView from "@/views/clientDetails/upcoming-appointments-view";
-
-// Mock data based on the schema
-const customerData = {
-  _id: "123456789",
-  full_name: "Maria Rodriguez",
-  email: "maria.rodriguez@example.com",
-  phone: "+1 (555) 123-4567",
-  profile_pic: "/placeholder.svg?height=200&width=200",
-  clinic_id: "clinic123",
-  initial_channel: "instagram",
-  total_debt: 2500.0,
-  channels: {
-    instagram: {
-      username: "maria.rodriguez",
-      name: "Maria R.",
-      thread_id: "ig-thread-123",
-      profile_info: {
-        bio: "Living life to the fullest",
-        followers: 1240,
-      },
-      messages: [
-        {
-          id: "ig1",
-          content:
-            "Merhaba, diş beyazlatma için bir danışma randevusu almak istiyorum.",
-          timestamp: "2023-10-15T14:30:00Z",
-          sender: "customer",
-        },
-        {
-          id: "ig2",
-          content:
-            "Merhaba Maria! Size diş beyazlatma konusunda yardımcı olmaktan memnuniyet duyarız. Randevu almak ister misiniz?",
-          timestamp: "2023-10-15T14:45:00Z",
-          sender: "clinic",
-        },
-        {
-          id: "ig3",
-          content:
-            "Evet, harika olur. Önümüzdeki hafta hangi saatlerde müsaitsiniz?",
-          timestamp: "2023-10-15T15:00:00Z",
-          sender: "customer",
-        },
-        {
-          id: "ig4",
-          content:
-            "Salı günü saat 14:00'te veya Perşembe günü saat 10:00'da boş zamanımız var. Hangisi sizin için daha uygun?",
-          timestamp: "2023-10-15T15:15:00Z",
-          sender: "clinic",
-        },
-        {
-          id: "ig5",
-          content: "Perşembe saat 10:00 mükemmel olur.",
-          timestamp: "2023-10-15T15:30:00Z",
-          sender: "customer",
-        },
-      ],
-      first_message_date: "2023-10-15T14:30:00Z",
-      last_message_date: "2023-10-15T15:30:00Z",
-      last_updated: "2023-10-15T15:30:00Z",
-      phone_giving_date: "2023-10-15T15:00:00Z",
-    },
-    whatsapp: {
-      profile_info: {
-        status: "Müsait",
-        about: "Diş hekiminde",
-      },
-      messages: [
-        {
-          id: "wa1",
-          content:
-            "Merhaba, ben Instagram'dan Maria. Perşembe günkü randevumu teyit etmek istiyorum.",
-          timestamp: "2023-10-16T09:00:00Z",
-          sender: "customer",
-        },
-        {
-          id: "wa2",
-          content:
-            "Merhaba Maria! Evet, Perşembe günü saat 10:00'daki randevunuz onaylandı. Sizi görmek için sabırsızlanıyoruz!",
-          timestamp: "2023-10-16T09:15:00Z",
-          sender: "clinic",
-        },
-        {
-          id: "wa3",
-          content:
-            "Harika, teşekkür ederim! Bu arada, beyazlatma işlemi genellikle ne kadar sürer?",
-          timestamp: "2023-10-16T09:30:00Z",
-          sender: "customer",
-        },
-        {
-          id: "wa4",
-          content:
-            "İşlem genellikle 60-90 dakika sürer. Geldiğinizde tüm detayları sizinle paylaşacağız.",
-          timestamp: "2023-10-16T09:45:00Z",
-          sender: "clinic",
-        },
-        {
-          id: "wa5",
-          content: "Mükemmel, bilgi için teşekkürler!",
-          timestamp: "2023-10-16T10:00:00Z",
-          sender: "customer",
-        },
-      ],
-      first_message_date: "2023-10-16T09:00:00Z",
-      last_message_date: "2023-10-16T10:00:00Z",
-      last_updated: "2023-10-16T10:00:00Z",
-      phone_giving_date: "2023-10-15T15:00:00Z",
-    },
-  },
-  portfolio: {
-    appointmentCount: 2,
-    appointments: [
-      {
-        id: "apt1",
-        date: "2025-05-12T10:00:00Z",
-        type: "Danışma",
-        status: "Onaylandı",
-        notes: "Diş beyazlatma için ilk danışma",
-      },
-      {
-        id: "apt2",
-        date: "2025-05-17T14:00:00Z",
-        type: "Tedavi",
-        status: "Planlandı",
-        notes: "Diş beyazlatma işlemi",
-      },
-      {
-        id: "apt3",
-        date: "2025-05-17T14:00:00Z",
-        type: "Tedavi",
-        status: "Planlandı",
-        notes: "Diş beyazlatma işlemi",
-      },
-    ],
-    treatments: [
-      {
-        id: "1",
-        name: "Diş Beyazlatma",
-        date: "2023-10-16T09:00:00Z",
-        status: "Planlandı",
-        price: 1000,
-        description: "description test",
-      },
-      {
-        id: "2",
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Planlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Planlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Planlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-        description: "description test",
-      },
-      {
-        name: "Implant",
-        date: "2023-11-23",
-        status: "Tamamlandı",
-        price: 1500,
-        description: "description test",
-      },
-    ],
-  },
-  // Additional payment info (not in original schema)
-  payment_info: {
-    payment_history: [
-      {
-        id: "pay1",
-        amount: 1000.0,
-        date: "2023-10-16",
-        description: "Danışma ücreti",
-        method: "creditCard",
-      },
-      {
-        id: "pay2",
-        amount: 350.0,
-        date: "2024-10-16",
-        description: "Diş Beyazlatma",
-        method: "cash",
-      },
-      {
-        id: "pay1",
-        amount: 1000.0,
-        date: "2023-10-16",
-        description: "Danışma ücreti",
-        method: "other",
-      },
-      {
-        id: "pay1",
-        amount: 1000.0,
-        date: "2023-10-16",
-        description: "Danışma ücreti",
-        method: "eft",
-      },
-    ],
-  },
-
-  // Chat summary (not in original schema)
-  chat_summary: {
-    main_issue: "Diş Beyazlatma",
-    key_points: [
-      "Profesyonel diş beyazlatma ile ilgileniyor",
-      "İşlem süresi hakkında endişeli",
-      "Hassasiyet sorunu bildirmedi",
-      "İlk kez beyazlatma yaptıracak hasta",
-    ],
-    sentiment: "Olumlu",
-    last_updated: "2023-10-16T10:00:00Z",
-  },
-};
+import useClientData from "@/hooks/data/use-client-data";
+import { getReadableDate } from "@/util/date";
 
 export default function CustomerDetail() {
   const params = useParams();
-  const customerId = params.id;
+  const { data, isFetching } = useClientData({ id: params.id });
 
-  // In a real application, you would fetch the customer data based on the ID
-  const customer = customerData;
-
-  // Format date for display
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString("tr-TR", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    });
-  };
-
-  // Format chat timestamp
-  const formatMessageTime = (dateString) => {
-    return new Date(dateString).toLocaleString("tr-TR", {
-      hour: "numeric",
-      minute: "numeric",
-    });
-  };
-  const [isDebtLoading, setIsDebtLoading] = useState(false);
-  const fetchTotalDebt = async () => {
-    setIsDebtLoading(true);
-    try {
-      //TODO: uncomment 2 lines below for prod
-      // const res = await api.get(`/get-payments/${id}`);
-      // toast.message(`Status: ${res.status}`);
-
-      //simulate api call
-      //TODO: comment 2 lines below for prod
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      toast.message(`Status: ${200}`);
-    } catch (error) {
-      toast.error(
-        error?.response?.data?.message ||
-          error.message ||
-          "Bilinmeyen bir hata oluştu.",
-      );
-    } finally {
-      setIsDebtLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchTotalDebt();
-  }, []);
   return (
     <div className="container mx-auto py-6">
       {/* Customer Header */}
@@ -343,21 +49,21 @@ export default function CustomerDetail() {
         <div className="flex items-center space-x-4">
           <Avatar className="h-16 w-16 border-2 border-gray-200">
             <AvatarImage
-              src={customer.profile_pic || "/placeholder.svg"}
-              alt={customer.full_name}
+              src={data?.profile_pic || "/placeholder.svg"}
+              alt={data?.full_name}
             />
             <AvatarFallback>
-              {customer.full_name
+              {data?.full_name
                 .split(" ")
                 .map((n) => n[0])
                 .join("")}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-2xl font-bold">{customer.full_name}</h1>
+            <h1 className="text-2xl font-bold">{data?.full_name}</h1>
             <div className="flex items-center space-x-2 text-gray-500">
               <Badge variant="outline" className="text-xs">
-                Müşteri ID: {customerId}
+                Müşteri ID: {params?.id}
               </Badge>
             </div>
           </div>
@@ -416,16 +122,18 @@ export default function CustomerDetail() {
                 <CardContent className="space-y-4 text-sm">
                   <div className="flex items-center">
                     <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{customer.phone}</span>
+                    <span>{data?.phone}</span>
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{customer.email}</span>
+                    <span>{data?.email}</span>
                   </div>
-                  {customer.channels.instagram && (
+                  {data?.channels.instagram && (
                     <div className="flex items-center">
                       <Instagram className="h-4 w-4 mr-2 text-gray-500" />
-                      <span>@{customer.channels.instagram.username}</span>
+                      <span>
+                        @{data?.channels?.instagram?.profile_info?.ig_username}
+                      </span>
                     </div>
                   )}
                 </CardContent>
@@ -445,19 +153,17 @@ export default function CustomerDetail() {
                     <div>
                       <h4 className="font-medium mb-2">Ana Sorun</h4>
                       <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-                        {customer.chat_summary.main_issue}
+                        {data?.chat_summary?.main_issue}
                       </Badge>
                     </div>
                     <div>
                       <h4 className="font-medium mb-2">Önemli Noktalar</h4>
                       <ul className="list-disc pl-5 space-y-1">
-                        {customer.chat_summary.key_points.map(
-                          (point, index) => (
-                            <li key={index} className="text-sm">
-                              {point}
-                            </li>
-                          ),
-                        )}
+                        {data?.chat_summary?.key_points.map((point, index) => (
+                          <li key={index} className="text-sm">
+                            {point}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                     <div className="flex justify-between items-center">
@@ -467,12 +173,12 @@ export default function CustomerDetail() {
                           variant="outline"
                           className="bg-green-50 text-green-700 border-green-200"
                         >
-                          {customer.chat_summary.sentiment}
+                          {data?.chat_summary?.sentiment}
                         </Badge>
                       </div>
                       <div className="text-xs text-gray-500">
                         Son güncelleme:{" "}
-                        {formatDate(customer.chat_summary.last_updated)}
+                        {getReadableDate(data?.chat_summary?.last_updated)}
                       </div>
                     </div>
                   </div>
@@ -500,8 +206,8 @@ export default function CustomerDetail() {
                           Instagram üzerinden İlk İletişim
                         </div>
                         <div className="text-sm text-gray-500">
-                          {formatDate(
-                            customer.channels.instagram.first_message_date,
+                          {getReadableDate(
+                            data?.channels?.instagram?.first_message_date,
                           )}
                         </div>
                         <div className="mt-1 text-sm">
@@ -523,8 +229,8 @@ export default function CustomerDetail() {
                           Telefon Numarası Verildi
                         </div>
                         <div className="text-sm text-gray-500">
-                          {formatDate(
-                            customer.channels.instagram.phone_giving_date,
+                          {getReadableDate(
+                            data?.channels?.instagram?.phone_giving_date,
                           )}
                         </div>
                         <div className="mt-1 text-sm">
@@ -545,8 +251,8 @@ export default function CustomerDetail() {
                           İlk WhatsApp İletişimi
                         </div>
                         <div className="text-sm text-gray-500">
-                          {formatDate(
-                            customer.channels.whatsapp.first_message_date,
+                          {getReadableDate(
+                            data?.channels?.whatsapp?.first_message_date,
                           )}
                         </div>
                         <div className="mt-1 text-sm">
@@ -565,7 +271,9 @@ export default function CustomerDetail() {
                       <div className="pb-6">
                         <div className="font-medium">Randevu Planlandı</div>
                         <div className="text-sm text-gray-500">
-                          {formatDate(customer.portfolio.appointments[0].date)}
+                          {getReadableDate(
+                            data?.portfolio?.appointments[0]?.date,
+                          )}
                         </div>
                         <div className="mt-1 text-sm">
                           Diş beyazlatma için ilk danışma
@@ -582,11 +290,11 @@ export default function CustomerDetail() {
                       <div>
                         <div className="font-medium">Ödeme Alındı</div>
                         <div className="text-sm text-gray-500">
-                          {customer.payment_info.payment_history[0].date}
+                          {data?.payment_info?.payment_history[0].date}
                         </div>
                         <div className="mt-1 text-sm">
                           Danışma ücreti:{" "}
-                          {customer.payment_info.payment_history[0].amount.toFixed(
+                          {data?.payment_info?.payment_history[0].amount.toFixed(
                             2,
                           )}{" "}
                           ₺
@@ -604,7 +312,7 @@ export default function CustomerDetail() {
         <TabsContent value="appointments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Upcoming Appointments */}
-            <UpcomingAppointmentsView customer={customer} />
+            <UpcomingAppointmentsView customer={data} />
 
             {/* Appointment History */}
             <Card className="md:col-span-2">
@@ -615,14 +323,14 @@ export default function CustomerDetail() {
                 <div className="relative">
                   <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
                   <div className="space-y-6 ml-8">
-                    {customer.portfolio.appointments.map((appointment) => (
+                    {data?.portfolio?.appointments?.map((appointment) => (
                       <div key={appointment.id} className="relative">
                         <div className="absolute -left-8 mt-1.5 h-4 w-4 rounded-full bg-gray-200"></div>
                         <div className="flex flex-col md:flex-row md:items-center justify-between pb-2 border-b">
                           <div>
                             <h4 className="font-medium">{appointment.type}</h4>
                             <p className="text-sm text-gray-500">
-                              {formatDate(appointment.date)}
+                              {getReadableDate(appointment.date)}
                             </p>
                           </div>
                           <Badge
@@ -650,13 +358,13 @@ export default function CustomerDetail() {
         <TabsContent value="treatments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Current Treatments */}
-            <CurrentTreatmentsView customer={customer} />
+            <CurrentTreatmentsView customer={data} />
 
             {/* Completed Treatments */}
-            <CompletedTreatmentsView customer={customer} />
+            <CompletedTreatmentsView customer={data} />
 
             {/* Treatment History */}
-            <TreatmentHistoryView customer={customer} />
+            <TreatmentHistoryView customer={data} />
           </div>
         </TabsContent>
 
@@ -665,18 +373,15 @@ export default function CustomerDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             {/* Left column: stack payment summary and new payments vertically */}
             <div className="flex flex-col gap-6">
-              <TotalPaymentsView
-                customer={customer}
-                isLoading={isDebtLoading}
-              />
+              <TotalPaymentsView customer={data} isLoading={isFetching} />
               <NewPaymenstView />
             </div>
             {/* Right column: invoice history */}
             <div>
-              <ServicePriceHistoryView customer={customer} />
+              <ServicePriceHistoryView customer={data} />
             </div>
           </div>
-          <InvoiceHistoryView customer={customer} />
+          <InvoiceHistoryView customer={data} />
         </TabsContent>
 
         {/* Chats Tab */}
@@ -689,7 +394,7 @@ export default function CustomerDetail() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {customer.channels.instagram && (
+                  {data?.channels?.instagram && (
                     <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                       <div className="flex items-center">
                         <div className="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center mr-3">
@@ -698,17 +403,17 @@ export default function CustomerDetail() {
                         <div>
                           <h4 className="font-medium">Instagram</h4>
                           <p className="text-xs text-gray-500">
-                            @{customer.channels.instagram.username}
+                            @{data?.channels?.instagram.username}
                           </p>
                         </div>
                       </div>
                       <Badge className="bg-blue-100 text-blue-800">
-                        {customer.channels.instagram.messages.length} mesaj
+                        {data?.channels?.instagram?.messages?.length} mesaj
                       </Badge>
                     </div>
                   )}
 
-                  {customer.channels.whatsapp && (
+                  {data?.channels?.whatsapp && (
                     <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                       <div className="flex items-center">
                         <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
@@ -716,13 +421,11 @@ export default function CustomerDetail() {
                         </div>
                         <div>
                           <h4 className="font-medium">WhatsApp</h4>
-                          <p className="text-xs text-gray-500">
-                            {customer.phone}
-                          </p>
+                          <p className="text-xs text-gray-500">{data?.phone}</p>
                         </div>
                       </div>
                       <Badge className="bg-green-100 text-green-800">
-                        {customer.channels.whatsapp.messages.length} mesaj
+                        {data?.channels?.whatsapp?.messages?.length} mesaj
                       </Badge>
                     </div>
                   )}
@@ -739,7 +442,7 @@ export default function CustomerDetail() {
                 <CardContent>
                   <Tabs defaultValue="instagram">
                     <TabsList className="mb-4">
-                      {customer.channels.instagram && (
+                      {data?.channels?.instagram && (
                         <TabsTrigger
                           value="instagram"
                           className="flex items-center"
@@ -748,7 +451,7 @@ export default function CustomerDetail() {
                           Instagram
                         </TabsTrigger>
                       )}
-                      {customer.channels.whatsapp && (
+                      {data?.channels?.whatsapp && (
                         <TabsTrigger
                           value="whatsapp"
                           className="flex items-center"
@@ -763,21 +466,21 @@ export default function CustomerDetail() {
                       <div className="flex justify-between items-center text-sm text-gray-500">
                         <div>
                           İlk iletişim:{" "}
-                          {formatDate(
-                            customer.channels.instagram.first_message_date,
+                          {getReadableDate(
+                            data?.channels?.instagram?.first_message_date,
                           )}
                         </div>
                         <div>
                           Son mesaj:{" "}
-                          {formatDate(
-                            customer.channels.instagram.last_message_date,
+                          {getReadableDate(
+                            data?.channels?.instagram?.last_message_date,
                           )}
                         </div>
                       </div>
 
                       <div className="border rounded-lg p-4 h-96 overflow-y-auto bg-gray-50">
                         <div className="space-y-4">
-                          {customer.channels.instagram.messages.map(
+                          {data?.channels?.instagram?.messages?.map(
                             (message) => (
                               <div
                                 key={message.id}
@@ -798,7 +501,7 @@ export default function CustomerDetail() {
                                         : "text-blue-100"
                                     }`}
                                   >
-                                    {formatMessageTime(message.timestamp)}
+                                    {getReadableDate(message?.timestamp)}
                                   </p>
                                 </div>
                               </div>
@@ -823,25 +526,25 @@ export default function CustomerDetail() {
                       <div className="flex justify-between items-center text-sm text-gray-500">
                         <div>
                           İlk iletişim:{" "}
-                          {formatDate(
-                            customer.channels.whatsapp.first_message_date,
+                          {getReadableDate(
+                            data?.channels?.whatsapp?.first_message_date,
                           )}
                         </div>
                         <div>
                           Son mesaj:{" "}
-                          {formatDate(
-                            customer.channels.whatsapp.last_message_date,
+                          {getReadableDate(
+                            data?.channels?.whatsapp?.last_message_date,
                           )}
                         </div>
                       </div>
 
                       <div className="border rounded-lg p-4 h-96 overflow-y-auto bg-gray-50">
                         <div className="space-y-4">
-                          {customer.channels.whatsapp.messages.map(
+                          {data?.channels?.whatsapp?.messages?.map(
                             (message) => (
                               <div
                                 key={message.id}
-                                className={`flex ${message.sender === "customer" ? "justify-start" : "justify-end"}`}
+                                className={`flex ${message?.sender === "customer" ? "justify-start" : "justify-end"}`}
                               >
                                 <div
                                   className={`max-w-[80%] rounded-lg px-4 py-2 ${
@@ -858,7 +561,7 @@ export default function CustomerDetail() {
                                         : "text-green-100"
                                     }`}
                                   >
-                                    {formatMessageTime(message.timestamp)}
+                                    {getReadableDate(message?.timestamp)}
                                   </p>
                                 </div>
                               </div>

@@ -2,11 +2,6 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-export const BASE_URLS = {
-  LOCAL: "http://localhost:8080/api/",
-  PROD: "https://hkaratas.com/api/",
-};
-
 export const currentBaseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const api = axios.create({

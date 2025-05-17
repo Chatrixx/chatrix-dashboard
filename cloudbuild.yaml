@@ -3,7 +3,7 @@ steps:
     args: [
       'build',
       '-t', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_WEB_APP_SERVICE}:${SHORT_SHA}',
-      '--build-arg', 'NEXT_PUBLIC_API_URL=https://${_API_SERVICE}-${PROJECT_NUMBER}.${_REGION}.run.app',
+      '--build-arg', 'NEXT_PUBLIC_API_URL=https://${_API_SERVICE}-${PROJECT_NUMBER}.${_REGION}.run.app/api/',
       '--build-arg', 'NODE_ENV=${_NODE_ENV}',
       '.'
     ]

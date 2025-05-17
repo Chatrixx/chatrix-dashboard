@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ProfileSettingsView from "@/views/profile/profile-settings-view";
 import TestChatView from "@/views/profile/test-chat-view";
 import { Info } from "lucide-react";
 import { useState } from "react";
@@ -63,6 +64,7 @@ export default function ProfilePage() {
       </div>
       <div className="basis-full flex-1 h-full max-h-full overflow-y-hidden">
         {activeTab.value === "chat-test" && <TestChatView />}
+        {activeTab.value === "settings" && <ProfileSettingsView />}
       </div>
     </div>
   );

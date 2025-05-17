@@ -27,6 +27,16 @@ import {
   WebcamIcon as ChatIcon,
 } from "lucide-react";
 import MainLayout from "@/components/custom/layout/main-layout";
+import TotalPaymentsView from "@/views/clientDetails/total-payments-view";
+import NewPaymenstView from "@/views/clientDetails/new-payments-view";
+import InvoiceHistoryView from "@/views/clientDetails/invoice-history-view";
+import ServicePriceHistoryView from "@/views/clientDetails/service-price-history-view";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import CurrentTreatmentsView from "@/views/clientDetails/current-treatments-view";
+import CompletedTreatmentsView from "@/views/clientDetails/completed-treatments-view";
+import TreatmentHistoryView from "@/views/clientDetails/treatment-history-view";
+import UpcomingAppointmentsView from "@/views/clientDetails/upcoming-appointments-view";
 
 // Mock data based on the schema
 const customerData = {
@@ -37,6 +47,7 @@ const customerData = {
   profile_pic: "/placeholder.svg?height=200&width=200",
   clinic_id: "clinic123",
   initial_channel: "instagram",
+  total_debt: 2500.0,
   channels: {
     instagram: {
       username: "maria.rodriguez",
@@ -139,14 +150,21 @@ const customerData = {
     appointments: [
       {
         id: "apt1",
-        date: "2023-10-19T10:00:00Z",
+        date: "2025-05-12T10:00:00Z",
         type: "Danışma",
         status: "Onaylandı",
         notes: "Diş beyazlatma için ilk danışma",
       },
       {
         id: "apt2",
-        date: "2023-10-26T14:00:00Z",
+        date: "2025-05-17T14:00:00Z",
+        type: "Tedavi",
+        status: "Planlandı",
+        notes: "Diş beyazlatma işlemi",
+      },
+      {
+        id: "apt3",
+        date: "2025-05-17T14:00:00Z",
         type: "Tedavi",
         status: "Planlandı",
         notes: "Diş beyazlatma işlemi",
@@ -154,37 +172,106 @@ const customerData = {
     ],
     treatments: [
       {
+        id: "1",
         name: "Diş Beyazlatma",
-        date: "2023-10-26",
+        date: "2023-10-16T09:00:00Z",
         status: "Planlandı",
+        price: 1000,
+        description: "description test",
+      },
+      {
+        id: "2",
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Planlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Planlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Planlandı",
+        price: 1500,
+        description: "description test",
       },
       {
         name: "Implant",
         date: "2023-11-23",
         status: "Tamamlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Tamamlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Tamamlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Tamamlandı",
+        price: 1500,
+        description: "description test",
+      },
+      {
+        name: "Implant",
+        date: "2023-11-23",
+        status: "Tamamlandı",
+        price: 1500,
+        description: "description test",
       },
     ],
   },
   // Additional payment info (not in original schema)
   payment_info: {
-    method: "Kredi Kartı",
     payment_history: [
       {
         id: "pay1",
-        amount: 75.0,
-        date: "2023-10-15",
+        amount: 1000.0,
+        date: "2023-10-16",
         description: "Danışma ücreti",
-        status: "Ödendi",
+        method: "creditCard",
       },
       {
         id: "pay2",
         amount: 350.0,
-        date: "2023-10-26",
+        date: "2024-10-16",
         description: "Diş Beyazlatma",
-        status: "Beklemede",
+        method: "cash",
+      },
+      {
+        id: "pay1",
+        amount: 1000.0,
+        date: "2023-10-16",
+        description: "Danışma ücreti",
+        method: "other",
+      },
+      {
+        id: "pay1",
+        amount: 1000.0,
+        date: "2023-10-16",
+        description: "Danışma ücreti",
+        method: "eft",
       },
     ],
   },
+
   // Chat summary (not in original schema)
   chat_summary: {
     main_issue: "Diş Beyazlatma",
@@ -224,7 +311,31 @@ export default function CustomerDetail() {
       minute: "numeric",
     });
   };
+  const [isDebtLoading, setIsDebtLoading] = useState(false);
+  const fetchTotalDebt = async () => {
+    setIsDebtLoading(true);
+    try {
+      //TODO: uncomment 2 lines below for prod
+      // const res = await api.get(`/get-payments/${id}`);
+      // toast.message(`Status: ${res.status}`);
 
+      //simulate api call
+      //TODO: comment 2 lines below for prod
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      toast.message(`Status: ${200}`);
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "Bilinmeyen bir hata oluştu.",
+      );
+    } finally {
+      setIsDebtLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchTotalDebt();
+  }, []);
   return (
     <div className="container mx-auto py-6">
       {/* Customer Header */}
@@ -493,75 +604,9 @@ export default function CustomerDetail() {
         <TabsContent value="appointments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Upcoming Appointments */}
-            <Card className="md:col-span-1 max-h-min">
-              <CardHeader>
-                <CardTitle className="text-lg">Yaklaşan Randevular</CardTitle>
-                <CardDescription>
-                  Toplam: {customer.portfolio.appointmentCount} randevu
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.portfolio.appointments
-                    .filter((apt) => new Date(apt.date) >= new Date())
-                    .map((appointment) => (
-                      <div
-                        key={appointment.id}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                          <Calendar className="h-5 w-5 text-purple-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">
-                                {appointment.type}
-                              </h4>
-                              <p className="text-sm text-gray-500">
-                                {formatDate(appointment.date)}
-                              </p>
-                            </div>
-                            <Badge
-                              variant={
-                                appointment.status === "Onaylandı"
-                                  ? "default"
-                                  : "outline"
-                              }
-                            >
-                              {appointment.status}
-                            </Badge>
-                          </div>
+            <UpcomingAppointmentsView customer={customer} />
 
-                          {appointment.notes && (
-                            <p className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                              {appointment.notes}
-                            </p>
-                          )}
-                          <div className="mt-3 flex space-x-2">
-                            <Button variant="outline" size="sm">
-                              Düzenle
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-red-500 border-red-200 hover:bg-red-50"
-                            >
-                              İptal Et
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-                <Button className="w-full mt-4">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Yeni Randevu Ekle
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Treatment History */}
+            {/* Appointment History */}
             <Card className="md:col-span-2">
               <CardHeader>
                 <CardTitle className="text-lg">Randevu Geçmişi</CardTitle>
@@ -605,437 +650,33 @@ export default function CustomerDetail() {
         <TabsContent value="treatments" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Current Treatments */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Mevcut Tedaviler</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.portfolio.treatments
-                    .filter((treatment) => treatment.status !== "Tamamlandı")
-                    .map((treatment, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                          <Clock className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">{treatment.name}</h4>
-                              <p className="text-sm text-gray-500">
-                                {treatment.date}
-                              </p>
-                            </div>
-                            <Badge variant="outline">{treatment.status}</Badge>
-                          </div>
-                          <div className="mt-3 flex space-x-2">
-                            <Button variant="outline" size="sm">
-                              Detaylar
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-200 hover:bg-green-50"
-                            >
-                              Tamamlandı Olarak İşaretle
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  {customer.portfolio.treatments.filter(
-                    (treatment) => treatment.status !== "Tamamlandı",
-                  ).length === 0 && (
-                    <div className="text-center py-6 text-gray-500">
-                      Mevcut tedavi bulunmamaktadır.
-                    </div>
-                  )}
-                </div>
-                <Button variant="outline" className="w-full mt-4">
-                  <Clock className="mr-2 h-4 w-4" />
-                  Yeni Tedavi Ekle
-                </Button>
-              </CardContent>
-            </Card>
+            <CurrentTreatmentsView customer={customer} />
 
             {/* Completed Treatments */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Tamamlanan Tedaviler</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.portfolio.treatments
-                    .filter((treatment) => treatment.status === "Tamamlandı")
-                    .map((treatment, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                          <Clock className="h-5 w-5 text-green-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">{treatment.name}</h4>
-                              <p className="text-sm text-gray-500">
-                                {treatment.date}
-                              </p>
-                            </div>
-                            <Badge className="bg-green-100 text-green-800">
-                              {treatment.status}
-                            </Badge>
-                          </div>
-                          <div className="mt-3">
-                            <Button variant="outline" size="sm">
-                              Detaylar
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  {customer.portfolio.treatments.filter(
-                    (treatment) => treatment.status === "Tamamlandı",
-                  ).length === 0 && (
-                    <div className="text-center py-6 text-gray-500">
-                      Tamamlanan tedavi bulunmamaktadır.
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <CompletedTreatmentsView customer={customer} />
 
-            {/* Treatment Details */}
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Tedavi Geçmişi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="relative">
-                  <div className="space-y-1">
-                    {customer.portfolio.treatments.map((treatment, index) => (
-                      <div key={index} className="flex gap-2">
-                        <div className="mt-1 min-h-max flex flex-col items-center">
-                          <div
-                            className={`h-4 w-4 rounded-full 
-                            ${
-                              treatment.status === "Tamamlandı"
-                                ? "bg-green-200"
-                                : ""
-                            }
-                            bg-gray-200 mb-2`}
-                          />
-                          <div
-                            className={`flex-grow w-0.5 
-                            ${
-                              treatment.status === "Tamamlandı"
-                                ? "bg-green-200"
-                                : ""
-                            }
-                            bg-gray-200`}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex flex-col md:flex-row md:items-center justify-between pb-2 border-b">
-                            <div>
-                              <h4 className="font-medium">{treatment.name}</h4>
-                              <p className="text-sm text-gray-500">
-                                {treatment.date}
-                              </p>
-                            </div>
-                            <Badge
-                              variant={
-                                treatment.status === "Tamamlandı"
-                                  ? "default"
-                                  : "outline"
-                              }
-                              className={`mt-2 md:mt-0 ${
-                                treatment.status === "Tamamlandı"
-                                  ? "bg-green-100 text-green-800"
-                                  : ""
-                              }`}
-                            >
-                              {treatment.status}
-                            </Badge>
-                          </div>
-                          <div className="mt-2 text-sm mb-4">
-                            <p>Tedavi notları burada görüntülenecektir.</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Treatment History */}
+            <TreatmentHistoryView customer={customer} />
           </div>
         </TabsContent>
 
         {/* Payments Tab */}
         <TabsContent value="payments" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Payment Summary */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Ödeme Özeti</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                    <div>
-                      <h4 className="text-sm text-gray-500">Toplam Ödenen</h4>
-                      <p className="text-2xl font-bold text-green-600">
-                        {customer.payment_info.payment_history
-                          .filter((p) => p.status === "Ödendi")
-                          .reduce((sum, payment) => sum + payment.amount, 0)
-                          .toFixed(2)}{" "}
-                        ₺
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="text-sm text-gray-500">
-                        Bekleyen Ödemeler
-                      </h4>
-                      <p className="text-2xl font-bold text-amber-600">
-                        {customer.payment_info.payment_history
-                          .filter((p) => p.status === "Beklemede")
-                          .reduce((sum, payment) => sum + payment.amount, 0)
-                          .toFixed(2)}{" "}
-                        ₺
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium mb-2">Ödeme Yöntemi</h4>
-                    <div className="flex items-center p-3 border rounded-lg">
-                      <CreditCard className="h-5 w-5 mr-2 text-gray-500" />
-                      <span>{customer.payment_info.method}</span>
-                    </div>
-                  </div>
-
-                  <Button className="w-full">
-                    <CreditCard className="mr-2 h-4 w-4" />
-                    Yeni Ödeme Ekle
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Payment History */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Ödeme Geçmişi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customer.payment_info.payment_history.map((payment) => {
-                    const isOverdue =
-                      payment.status === "Beklemede" &&
-                      new Date(payment.date) < new Date();
-
-                    return (
-                      <div
-                        key={payment.id}
-                        className="flex items-start p-3 border rounded-lg"
-                      >
-                        <div
-                          className={`h-10 w-10 rounded-full ${
-                            payment.status === "Ödendi"
-                              ? "bg-green-100"
-                              : isOverdue
-                                ? "bg-red-100"
-                                : "bg-amber-100"
-                          } flex items-center justify-center mr-4`}
-                        >
-                          <CreditCard
-                            className={`h-5 w-5 ${
-                              payment.status === "Ödendi"
-                                ? "text-green-600"
-                                : isOverdue
-                                  ? "text-red-600"
-                                  : "text-amber-600"
-                            }`}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">
-                                {payment.description}
-                              </h4>
-                              <p className="text-sm text-gray-500">
-                                {payment.date}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p
-                                className={`font-bold ${
-                                  payment.status === "Ödendi"
-                                    ? "text-green-600"
-                                    : isOverdue
-                                      ? "text-red-600"
-                                      : "text-amber-600"
-                                }`}
-                              >
-                                {payment.amount.toFixed(2)} ₺
-                              </p>
-                              <Badge
-                                variant={
-                                  payment.status === "Ödendi"
-                                    ? "default"
-                                    : "outline"
-                                }
-                                className={
-                                  payment.status === "Ödendi"
-                                    ? "bg-green-100 text-green-800"
-                                    : ""
-                                }
-                              >
-                                {payment.status}
-                              </Badge>
-                            </div>
-                          </div>
-
-                          {isOverdue && (
-                            <div className="mt-2 p-2 bg-red-50 border border-red-100 rounded-md text-sm text-red-600 flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-4 w-4 mr-1"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                />
-                              </svg>
-                              Gecikmiş Ödeme
-                            </div>
-                          )}
-
-                          {payment.status === "Beklemede" && (
-                            <div className="mt-3 flex space-x-2">
-                              <Button
-                                size="sm"
-                                className="bg-green-600 hover:bg-green-700"
-                              >
-                                Ödendi Olarak İşaretle
-                              </Button>
-                              <Button variant="outline" size="sm">
-                                Düzenle
-                              </Button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Invoice History */}
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Fatura Geçmişi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="rounded-md border">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Fatura No
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Tarih
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Açıklama
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Tutar
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Durum
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          İşlemler
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {customer.payment_info.payment_history.map(
-                        (payment, index) => (
-                          <tr key={payment.id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              INV-{2023 + index}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {payment.date}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {payment.description}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {payment.amount.toFixed(2)} ₺
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <Badge
-                                variant={
-                                  payment.status === "Ödendi"
-                                    ? "default"
-                                    : "outline"
-                                }
-                                className={
-                                  payment.status === "Ödendi"
-                                    ? "bg-green-100 text-green-800"
-                                    : ""
-                                }
-                              >
-                                {payment.status}
-                              </Badge>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <Button variant="ghost" size="sm">
-                                <FileText className="h-4 w-4" />
-                              </Button>
-                            </td>
-                          </tr>
-                        ),
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Left column: stack payment summary and new payments vertically */}
+            <div className="flex flex-col gap-6">
+              <TotalPaymentsView
+                customer={customer}
+                isLoading={isDebtLoading}
+              />
+              <NewPaymenstView />
+            </div>
+            {/* Right column: invoice history */}
+            <div>
+              <ServicePriceHistoryView customer={customer} />
+            </div>
           </div>
+          <InvoiceHistoryView customer={customer} />
         </TabsContent>
 
         {/* Chats Tab */}

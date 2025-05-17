@@ -4,7 +4,7 @@ import { getReadableDate } from "@/util/date";
 import { ExternalLink, MoreVertical, Phone, User, Video } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { DropdownMenu } from "../ui/dropdown-menu";
 import {
   Select,
@@ -15,6 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import Link from "next/link";
+import useClientData from "@/hooks/data/use-client-data";
 
 const SenderMessage = ({
   sender = { profile_pic: "", full_name: "" },
@@ -108,20 +110,12 @@ export default function ChatMessages({ chatUser, messages, channel }) {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" title="Ara">
-              <Phone className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" title="Görüntülü Arama">
-              <Video className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" asChild title="Profile Git">
-              <a href={`/profile/${chatUser?.id}`}>
-                <User className="h-5 w-5" />
-              </a>
-            </Button>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="h-5 w-5" />
-            </Button>
+            <Link href={`/clients/${chatUser?.userId}`}>
+              <Button variant="outline">
+                <User className="h-4 w-4" />
+                <p>Profile Git</p>
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import ChatMessages from "@/components/custom/chat-messages";
 import MainLayout from "@/components/custom/layout/main-layout";
-import { DataTable } from "@/components/custom/table.jsx";
+import { DataTable } from "@/components/custom/table/index.jsx";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

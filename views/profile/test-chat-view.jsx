@@ -136,28 +136,7 @@ export default function TestChatView() {
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" title="Ara">
-              <Phone className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" title="Görüntülü ara">
-              <Video className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              asChild
-              title="Profili görüntüle"
-            >
-              <a href={`/profile/${TestReceiverUser.id}`}>
-                <User className="h-5 w-5" />
-              </a>
-            </Button>
-
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="h-5 w-5" />
-            </Button>
-          </div>
+          <div className="flex items-center space-x-2"></div>
         </div>
       </CardHeader>
 

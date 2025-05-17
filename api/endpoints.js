@@ -19,10 +19,12 @@ const ENDPOINTS = {
   },
   CHATS: {
     GET_CHATS: ROOTS.CHATS,
+    GET_CHAT_SUMMARY: `${ROOTS.CHATS}/summarize_chat`,
   },
   CLIENTS: {
     GET_CLIENTS: `${ROOTS.CLIENTS}`,
     GET_CLIENT_BY_ID: (id) => `${ROOTS.CLIENTS}/${id}`,
+    GET_CLIENT_AI_SUMMARY: (id) => `${ROOTS.CLIENTS}/${id}/ai_summary`,
   },
   TEST: {
     SEND_MESSAGE: `${ROOTS.TEST}/send_message`,

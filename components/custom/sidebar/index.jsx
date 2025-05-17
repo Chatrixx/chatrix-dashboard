@@ -40,16 +40,16 @@ export default function AppSidebar() {
       label: "Sohbetler",
       href: "/chats",
     },
-    {
-      icon: Calendar,
-      label: "Randevular",
-      href: "/appointments",
-    },
-    {
-      icon: CreditCard,
-      label: "Ödemeler",
-      href: "/payments",
-    },
+    // {
+    //   icon: Calendar,
+    //   label: "Randevular",
+    //   href: "/appointments",
+    // },
+    // {
+    //   icon: CreditCard,
+    //   label: "Ödemeler",
+    //   href: "/payments",
+    // },
   ];
   const { logout } = useAuth();
   return (

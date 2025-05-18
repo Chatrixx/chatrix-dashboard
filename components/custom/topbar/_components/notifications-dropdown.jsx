@@ -12,12 +12,14 @@ import api, { currentBaseUrl } from "@/api/_axios";
 import CircleLoader from "../../circle-loader";
 import { useAuth } from "@/context/auth";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/router";
 
 export default function NotificationsDropdown() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -110,7 +112,10 @@ export default function NotificationsDropdown() {
           </div>
         </DropdownMenuItem>
         <Separator />
-        <DropdownMenuItem className="cursor-pointer flex items-center justify-between">
+        <DropdownMenuItem
+          className="cursor-pointer flex items-center justify-between"
+          onClick={() => router.push("/notifications")}
+        >
           <span>Tümünü Gör</span>
           <ArrowRight />
         </DropdownMenuItem>

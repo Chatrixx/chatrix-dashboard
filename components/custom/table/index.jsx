@@ -212,8 +212,8 @@ export function DataTable({
                       <TableCell
                         className={
                           isFilled
-                            ? "text-[12px] h-[50px] p-0 dark:text-white"
-                            : "text-[12px] !min-h-[41px]"
+                            ? "text-[14px] h-[50px] p-0 dark:text-white "
+                            : "text-[14px] !min-h-[41px]"
                         }
                         key={cell.id}
                       >

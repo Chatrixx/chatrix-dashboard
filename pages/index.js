@@ -6,7 +6,11 @@ import { useEffect, useMemo, useState } from "react";
 import ChatsChart from "@/components/custom/chart";
 import { tr } from "date-fns/locale";
 import { format } from "date-fns";
-import { getDateRangePresets, getDateRangeString } from "@/util/date";
+import {
+  getDateRangePresets,
+  getDateRangeString,
+  getReadableDate,
+} from "@/util/date";
 import { Card } from "@/components/ui/card";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -87,7 +91,7 @@ export default function Home() {
             <Card className="basis p-4 pb-6 row-span-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium mt-2 text-foreground">
-                  Mesajlar
+                  Danışanlar
                 </h3>
                 <Image
                   unoptimized
@@ -116,8 +120,8 @@ export default function Home() {
           </div>
           <div className="col-span-6">
             <ChatsChart
-              data={analytics.data?.data_series.map((serie) => ({
-                day: serie.date.split("-")[2],
+              data={analytics.data?.data_series.reverse().map((serie) => ({
+                day: getReadableDate(serie.date),
                 chats: serie.totalMessengers,
                 phoneNumbers: serie.totalPhoneNumbersGiven,
                 ratio: serie.phoneNumberGivingRatio,

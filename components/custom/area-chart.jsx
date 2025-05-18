@@ -9,6 +9,25 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const data = payload.reduce((acc, item) => {
+      acc[item.dataKey] = item.value;
+      return acc;
+    }, {});
+    return (
+      <div className="bg-white border rounded-md p-2 shadow-md text-sm">
+        <p className="font-semibold">{label}</p>
+        <p>Chats: {data.chats}</p>
+        <p>Phone Numbers: {data.phoneNumbers}</p>
+        {data.ratio !== undefined && <p>Ratio: {data.ratio.toFixed(2)}</p>}
+      </div>
+    );
+  }
+
+  return null;
+};
+
 export default function ChatsAreaChart({ data }) {
   return (
     <ResponsiveContainer className="w-full min-h-[280px]">
@@ -44,7 +63,7 @@ export default function ChatsAreaChart({ data }) {
           axisLine={false}
         />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
         <Area
           type="natural"
           dataKey="chats"

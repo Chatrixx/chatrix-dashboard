@@ -4,12 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  MessageCircle,
-  Info,
-  WebcamIcon as ChatIcon,
-  Loader2,
-} from "lucide-react";
+import { WebcamIcon as ChatIcon, Loader2 } from "lucide-react";
 import MainLayout from "@/components/custom/layout/main-layout";
 import TotalPaymentsView from "@/views/clientDetails/total-payments-view";
 import NewPaymenstView from "@/views/clientDetails/new-payments-view";
@@ -25,7 +20,6 @@ import ChatHistoryView from "@/views/clientDetails/chat-history-view";
 import CustomerTimelineView from "@/views/clientDetails/customer-timeline-view";
 import CustomerSummaryView from "@/views/clientDetails/customer-summary-view";
 import CustomerContactInformationView from "@/views/clientDetails/customer-contact-information-view";
-import CustomInstagramIconColored from "@/assets/icons/CustomInstagramIconColored";
 import Link from "next/link";
 import CustomWhatsappIconOutline from "@/assets/icons/CustomWhatsappIconOutline";
 import { convertPhone } from "@/util/phone";
@@ -89,13 +83,14 @@ export default function CustomerDetail() {
       </div>
 
       {/* Main Tabs */}
-      <Tabs defaultValue="general" className="w-full">
+      {/* TODO:defaultValue */}
+      <Tabs defaultValue="chats" className="w-full hidden">
         {/* TODO: increase grid cols according to <TabsTrigger> number */}
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="general" className="flex items-center">
+        <TabsList className="grid w-full grid-cols-1">
+          {/* <TabsTrigger value="general" className="flex items-center">
             <Info className="h-4 w-4 mr-2" />
             Genel Bilgiler
-          </TabsTrigger>
+          </TabsTrigger> */}
           {/* <TabsTrigger value="appointments" className="flex items-center">
             <CalendarDays className="h-4 w-4 mr-2" />
             Randevular
@@ -124,10 +119,7 @@ export default function CustomerDetail() {
             </div>
             {/* Right Column */}
             <div className="md:col-span-2 space-y-6">
-              {/* Customer Problem/Question Summary */}
               <CustomerSummaryView data={data} refetch={refetch} />
-
-              {/* Customer Timeline */}
               {false && <CustomerTimelineView data={data} />}
             </div>
           </div>
@@ -213,10 +205,12 @@ export default function CustomerDetail() {
         <TabsContent value="chats" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Chat Channels */}
-            <Card className="col-span-1">
+            {/* <CustomerContactInformationView data={data} /> */}
+            {/* <Card className="col-span-1">
               <CardHeader>
                 <CardTitle className="text-lg">İletişim Kanalları</CardTitle>
               </CardHeader>
+             
               <CardContent>
                 <div className="space-y-4">
                   {data?.channels?.instagram && (
@@ -260,13 +254,17 @@ export default function CustomerDetail() {
                   )}
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Chat History */}
             <ChatHistoryView data={data} />
           </div>
         </TabsContent>
       </Tabs>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <CustomerContactInformationView data={data} />
+        <ChatHistoryView data={data} />
+      </div>
     </div>
   );
 }

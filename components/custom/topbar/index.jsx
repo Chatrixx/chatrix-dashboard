@@ -30,7 +30,6 @@ export default function TopBar() {
           />
         </div>
         <div className="flex justify-center items-center gap-2">
-          <NotificationsDropdown />
           <Link href="/profile" className="hover:opacity-75">
             <User strokeWidth={1.5} />
           </Link>

@@ -6,7 +6,7 @@ import React from "react";
 
 export default function CustomerContactInformationView({ data }) {
   return (
-    <Card>
+    <Card className="max-h-fit">
       <CardHeader>
         <CardTitle className="text-lg">İletişim Bilgileri</CardTitle>
       </CardHeader>

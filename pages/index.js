@@ -120,7 +120,7 @@ export default function Home() {
           </div>
           <div className="col-span-6">
             <ChatsChart
-              data={analytics.data?.data_series.reverse().map((serie) => ({
+              data={analytics.data?.data_series.map((serie) => ({
                 day: getReadableDate(serie.date),
                 chats: serie.totalMessengers,
                 phoneNumbers: serie.totalPhoneNumbersGiven,

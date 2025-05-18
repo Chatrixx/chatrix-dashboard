@@ -28,7 +28,7 @@ export default function CustomerSummaryView({ data, refetch }) {
     }
   };
   return (
-    <Card>
+    <Card className="max-h-fit">
       <CardHeader className="grid grid-cols-2 items-center">
         <div className="flex flex-col">
           <CardTitle className="text-lg">Müşteri Özeti</CardTitle>

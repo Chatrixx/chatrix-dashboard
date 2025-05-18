@@ -26,7 +26,7 @@ const SenderMessage = ({
     <div className="flex gap-2 ml-auto">
       <div className="flex flex-col gap-1 items-end ml-12">
         <div className="bg-muted p-3 rounded-lg rounded-tr-none text-sm">
-          <p className="">{message?.content}</p>
+          <p className="break-words break-all">{message?.content}</p>
         </div>
         <span className="text-xs text-muted-foreground">
           {getReadableDate(message?.timestamp)}
@@ -56,7 +56,7 @@ const ReceiverMessage = ({
       </Avatar>
       <div className="flex flex-col gap-1 items-end mr-3">
         <div className="bg-primary text-primary-foreground p-3 rounded-lg rounded-tl-none text-sm">
-          <p className="">{message?.content}</p>
+          <p className="break-words break-all">{message?.content}</p>
         </div>
         <span className="text-xs text-muted-foreground">
           {getReadableDate(message?.timestamp)}
@@ -76,7 +76,7 @@ export default function ChatMessages({ chatUser, messages, channel }) {
   }, [chatUser]);
   return (
     <Card
-      className="w-full h-full max-h-full overflow-y-scroll"
+      className="w-full h-full max-h-full overflow-y-scroll overflow-x-hidden"
       ref={messagesEndRef}
     >
       <div className="border-b p-4 sticky top-0 bg-background z-10">

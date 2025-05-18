@@ -50,12 +50,12 @@ export default function ChatHistoryView({ data }) {
   return (
     <div className="md:col-span-2">
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-1">
           <CardTitle className="text-lg">Görüşme Geçmişi</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="instagram">
-            <TabsList className="mb-4">
+            {/* <TabsList className="mb-4">
               {data?.channels?.instagram && (
                 <TabsTrigger value="instagram" className="flex items-center">
                   <Instagram className="h-4 w-4 mr-2" />
@@ -68,9 +68,9 @@ export default function ChatHistoryView({ data }) {
                   WhatsApp
                 </TabsTrigger>
               )}
-            </TabsList>
+            </TabsList> */}
 
-            <TabsContent value="instagram" className="space-y-4">
+            <TabsContent value="instagram" className="space-y-2">
               <div className="flex justify-between items-center text-sm text-gray-500">
                 <div>
                   İlk iletişim:{" "}
@@ -120,7 +120,7 @@ export default function ChatHistoryView({ data }) {
                 </div>
               </div>
 
-              <div className="flex justify-between">
+              <div className="mt-4 flex justify-between">
                 <Button
                   variant="outline"
                   size="sm"

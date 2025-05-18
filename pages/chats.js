@@ -36,9 +36,9 @@ const tableColumns = [
       return (
         <div className="flex items-center justify-between gap-4">
           <Badge
-            className="overflow-x-hidden text-nowrap"
+            className="overflow-x-hidden"
             variant="secondary"
-          >{`${lastMessage?.content.slice(0, 72)} ${lastMessage?.content?.length > 72 ? "..." : ""}`}</Badge>
+          >{`${lastMessage?.content.slice(0, 50)} ${lastMessage?.content?.length > 50 ? "..." : ""}`}</Badge>
           <p className="text-muted-foreground">
             {getReadableDate(lastMessage.timestamp)}
           </p>

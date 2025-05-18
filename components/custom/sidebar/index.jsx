@@ -6,7 +6,7 @@ import {
   MessageSquare,
   Calendar,
   CreditCard,
-  Bell,
+  BellRing,
   LogOut,
 } from "lucide-react";
 import {
@@ -40,11 +40,11 @@ export default function AppSidebar() {
       label: "Sohbetler",
       href: "/chats",
     },
-    // {
-    //   icon: Calendar,
-    //   label: "Randevular",
-    //   href: "/appointments",
-    // },
+    {
+      icon: BellRing,
+      label: "Canlı Bildirimler",
+      href: "/notifications",
+    },
     // {
     //   icon: CreditCard,
     //   label: "Ödemeler",

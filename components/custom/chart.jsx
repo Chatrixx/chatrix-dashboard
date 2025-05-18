@@ -8,7 +8,7 @@ import ChatsBarChart from "./bar-chart";
 import ChatsAreaChart from "./area-chart";
 
 export default function ChatsChart({ data }) {
-  const [chartType, setChartType] = useState("col");
+  const [chartType, setChartType] = useState("area");
   return (
     <Card className="w-full">
       <CardHeader className="mb-4 ">
@@ -18,11 +18,11 @@ export default function ChatsChart({ data }) {
           </span>
           <Tabs value={chartType} onValueChange={setChartType}>
             <TabsList className="bg-muted rounded-md p-0.5">
-              <TabsTrigger value="col" className="">
-                <BarChart2 size={20} />
-              </TabsTrigger>
-              <TabsTrigger value="area">
+              <TabsTrigger value="area" className="">
                 <LucideTrendingUp size={20} />
+              </TabsTrigger>
+              <TabsTrigger value="col">
+                <BarChart2 size={20} />
               </TabsTrigger>
             </TabsList>
           </Tabs>

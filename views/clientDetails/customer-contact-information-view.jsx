@@ -11,19 +11,22 @@ export default function CustomerContactInformationView({ data }) {
         <CardTitle className="text-lg">İletişim Bilgileri</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
-        <div className="flex items-center">
-          <Phone className="h-4 w-4 mr-2 text-gray-500" />
-          <span>{data?.phone}</span>
+        <div className="flex items-center space-x-2">
+          <span className="inline-flex items-center justify-center w-5 h-5">
+            <Phone className="w-4 h-4 text-gray-500" />
+          </span>
+          <span className="text-sm text-gray-800 dark:text-gray-200">
+            {data?.phone}
+          </span>
         </div>
+
         {data?.channels.instagram && (
           <Link
-            className="flex"
             href={`https://instagram.com/${data?.channels.instagram?.profile_info?.ig_username}`}
+            className="inline-flex items-center space-x-2 -ml-2 px-3 py-1 rounded-full bg-purple-400 text-white text-sm font-medium w-fit"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r from-[#F9CE34] via-[#EE2A7B] to-[#6228D7] opacity-90">
-              <Instagram className="h-4 w-4 mr-2" />@
-              {data?.channels?.instagram?.profile_info?.ig_username}
-            </div>
+            <Instagram className="w-4 h-4" />
+            <span>@{data?.channels?.instagram?.profile_info?.ig_username}</span>
           </Link>
         )}
       </CardContent>

@@ -34,13 +34,6 @@ export default function CustomerSummaryView({ data, refetch }) {
           <CardTitle className="text-lg">Müşteri Özeti</CardTitle>
           <CardDescription>Konuşma analizine dayalı</CardDescription>
         </div>
-        {!data?.client_summary && (
-          <div className="flex justify-end">
-            <Button variant="outline" className="w-fit" onClick={handleRefresh}>
-              <span className="text-gray-500">Yenile</span>
-            </Button>
-          </div>
-        )}
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -53,10 +46,14 @@ export default function CustomerSummaryView({ data, refetch }) {
             </div>
           ) : (
             <div className="flex flex-row items-center justify-center h-full">
-              <Badge className="bg-red-50 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200">
+              <Button
+                className="bg-blue-200 text-blue-700 border-blue-200 hover:bg-blue-300 hover:text-blue-800"
+                onClick={handleRefresh}
+                variant="outline"
+              >
                 <Info className="w-6 h-6 mr-2 " />
-                <p className="text-lg">Özet için yenileyin</p>
-              </Badge>
+                <p className="text-lg">Özet Oluştur</p>
+              </Button>
             </div>
           )}
 

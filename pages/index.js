@@ -91,7 +91,7 @@ export default function Home() {
             <Card className="basis p-4 pb-6 row-span-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium mt-2 text-foreground">
-                  Danışanlar
+                  Mesaj Atan Sayısı
                 </h3>
                 <Image
                   unoptimized

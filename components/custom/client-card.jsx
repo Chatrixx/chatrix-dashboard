@@ -29,7 +29,9 @@ export default function ClientCard({ client, isSelected }) {
 
             <div className="flex-1 space-y-1">
               <div>
-                <h3 className="font-medium text-base">{client.full_name}</h3>
+                <h3 className="medium tracking-[-0.025em]">
+                  {client.full_name}
+                </h3>
               </div>
 
               <div className="text-sm text-muted-foreground space-y-1">

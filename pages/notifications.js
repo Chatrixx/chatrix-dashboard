@@ -8,8 +8,10 @@ import { MessageCircleQuestion, Phone, SearchX, User, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import clsx from "clsx";
 
 export default function Notifications() {
+  const [sseEstablished, setSseEstablished] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -23,6 +25,7 @@ export default function Notifications() {
         setLoading(true);
         const response = await api.get("notifications");
         setNotifications(response.data || []);
+        setSelectedNotification(response.data[0]);
       } catch {
       } finally {
         setLoading(false);
@@ -35,9 +38,14 @@ export default function Notifications() {
       `${currentBaseUrl}sse?id=${user.userId}`,
     );
 
+    eventSource.onopen = () => {
+      setSseEstablished(true);
+    };
     eventSource.onmessage = (event) => {
       try {
-        const newNotification = JSON.parse(event.data);
+        const newNotificationEvent = JSON.parse(event.data);
+        const newNotification = newNotificationEvent?._doc;
+
         setNotifications((prev) => [newNotification, ...prev]);
       } catch {}
     };
@@ -59,11 +67,32 @@ export default function Notifications() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="space-y-4 p-4 w-full animate-fade-in border-b">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Tüm Bildirimler</h1>
-          {notifications.some((n) => !n.seen) && (
+    <div className="flex flex-col w-full max-h-full ">
+      <div className="max-h-min space-y-4 w-full animate-fade-in border-b">
+        <div className="flex items-center justify-between p-4">
+          <h1 className="flex  items-center gap-2 text-2xl font-semibold">
+            <div
+              className={clsx(
+                "w-2.5 h-2.5 animate-fade-in  rounded-full relative",
+                {
+                  "bg-gray-400": !sseEstablished,
+                  "bg-green-500/90": sseEstablished,
+                },
+              )}
+            >
+              <div
+                style={{
+                  animationDuration: "1600ms",
+                }}
+                className={clsx(
+                  "w-2.5 h-2.5 rounded-full  bg-green-400 animate-ping",
+                  { hidden: !sseEstablished },
+                )}
+              ></div>
+            </div>
+            Canlı Bildirimler
+          </h1>
+          {notifications.some((n) => !n?.seen) && (
             <button
               onClick={markAllAsSeen}
               className="text-sm text-blue-600 hover:underline"
@@ -73,8 +102,8 @@ export default function Notifications() {
           )}
         </div>
       </div>
-      <div className="flex w-full h-full overflow-hidden">
-        <div className="w-full md:w-1/2 lg:w-2/3 p-4 space-y-4 overflow-y-auto">
+      <div className="basis-full  flex w-full overflow-hidden">
+        <div className="w-full md:w-1/2 lg:w-2/3 ">
           {loading && (
             <div className="animate-fade-in w-full flex justify-center py-24">
               <CircleLoader />
@@ -87,73 +116,83 @@ export default function Notifications() {
             </div>
           )}
           {!loading && notifications.length > 0 && (
-            <div className="flex flex-col gap-2">
-              {notifications.map((notif) => (
-                <NotificationCard
-                  key={notif._id}
-                  notif={notif}
-                  // onMarkAsSeen={markAsSeen}
-                  onClick={() => {
-                    setSelectedNotification(notif);
-                  }}
-                />
-              ))}
+            <div className="overflow-y-scroll scrollbar-elegant h-full overflow-x-hidden  divide-y">
+              {notifications.map((notif) => {
+                return (
+                  <NotificationCard
+                    isSelected={selectedNotification?._id == notif._id}
+                    key={notif._id}
+                    notif={notif}
+                    onClick={() => {
+                      setSelectedNotification(notif);
+                    }}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
 
-        {selectedNotification && (
-          <Card className="hidden md:flex flex-col w-1/2 lg:w-1/3 p-6 bg-white shadow-md animate-fade-in mt-4 border rounded-lg space-y-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="font-semibold text-gray-800">
-                  {selectedNotification.title}
-                </h2>
-                <div className="flex items-center gap-1 mt-4">
-                  <MessageCircleQuestion size={16} className="text-gray-800" />
-                  <h6 className="text-sm font-semibold text-gray-800">
-                    Sohbet Özeti
-                  </h6>
+        <div
+          key={selectedNotification?._id}
+          className="animate-fade-in p-2  border-l md:flex flex-col w-1/2 lg:w-5/12  bg-white "
+        >
+          {selectedNotification && (
+            <Card className="p-6 border-none shadow-none">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="font-semibold text-gray-800">
+                    {selectedNotification.title}
+                  </h2>
+                  <div className="flex items-center gap-1 mt-4">
+                    <MessageCircleQuestion
+                      size={16}
+                      className="text-gray-800"
+                    />
+                    <h6 className="text-sm font-semibold text-gray-800">
+                      Sohbet Özeti
+                    </h6>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-700">
+                    {selectedNotification.body.summary ||
+                      "Bu bildirim için bir özet yok."}
+                  </p>
                 </div>
-                <p className="mt-1 text-sm text-gray-700">
-                  {selectedNotification.body.summary ||
-                    "Bu bildirim için bir özet yok."}
-                </p>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-gray-400 hover:text-gray-600"
+                  onClick={() => setSelectedNotification(null)}
+                >
+                  <X size={16} />
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-gray-400 hover:text-gray-600"
-                onClick={() => setSelectedNotification(null)}
-              >
-                <X size={16} />
-              </Button>
-            </div>
-            {selectedNotification.body.phoneNumber && (
-              <div>
-                <div className="flex items-center gap-1 mt-2">
-                  <Phone size={16} />
-                  <h6 className="text-sm font-semibold">
-                    Telefon:{" "}
-                    <span className="underline">
-                      {selectedNotification.body.phoneNumber}
-                    </span>
-                  </h6>
+              {selectedNotification.body.phoneNumber && (
+                <div>
+                  <div className="flex items-center gap-1 mt-6">
+                    <Phone size={16} />
+                    <h6 className="text-sm font-semibold">
+                      Telefon:{" "}
+                      <span className="underline">
+                        {selectedNotification.body.phoneNumber}
+                      </span>
+                    </h6>
+                  </div>
                 </div>
-              </div>
-            )}
-            <Link href={`/clients/${selectedNotification.body.clientId}`}>
-              <Button
-                variant="outline"
-                className="w-full mt-2"
-                onClick={() => setSelectedNotification(null)}
-              >
-                <User strokeWidth={2.4} />
-                Kullanıcı Detayına Git
-              </Button>
-            </Link>
-          </Card>
-        )}
+              )}
+              <Link href={`/clients/${selectedNotification.body.clientId}`}>
+                <Button
+                  variant="outline"
+                  className="w-full mt-8"
+                  onClick={() => setSelectedNotification(null)}
+                >
+                  <User strokeWidth={2.4} />
+                  Kullanıcı Detayına Git
+                </Button>
+              </Link>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -58,3 +58,28 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+/* Apply to any scrollable element */
+.scrollbar-elegant {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: 2px;
+  scrollbar-color: #9ca3af #f3f4f600; /* thumb color track color */
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.scrollbar-elegant::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+.scrollbar-elegant::-webkit-scrollbar-track {
+  background: #f3f4f6; /* Tailwind's gray-100 */
+  width: 2px;
+}
+
+.scrollbar-elegant::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* Tailwind's gray-400 */
+  border-radius: 6px;
+  width: 2px;
+  border: 2px solid #f3f4f6; /* optional spacing */
+}

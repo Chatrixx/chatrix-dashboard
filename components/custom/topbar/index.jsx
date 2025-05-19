@@ -22,12 +22,12 @@ export default function TopBar() {
         ) : null}
       </div>
       <div className="first_in_right flex justify-center items-center">
-        <div className="m-3">
-          <input
+        <div className="m-3 h-10">
+          {/* <input
             type="text"
             placeholder="Müşteri Ara"
             className="border-[1px] h-10 px-3 pr-16 rounded-lg text-sm focus:outline-none placeholder:tracking-tight"
-          />
+          /> */}
         </div>
         <div className="flex justify-center items-center gap-2">
           <Link href="/profile" className="hover:opacity-75">

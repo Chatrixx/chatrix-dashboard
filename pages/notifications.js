@@ -17,6 +17,8 @@ export default function Notifications() {
   const { user } = useAuth();
   const [selectedNotification, setSelectedNotification] = useState(null);
 
+  const notificationAuido = new Audio("/notification.mp3");
+
   useEffect(() => {
     if (!user?.userId) return;
 
@@ -45,8 +47,10 @@ export default function Notifications() {
       try {
         const newNotificationEvent = JSON.parse(event.data);
         const newNotification = newNotificationEvent?._doc;
-
+        if (!newNotification) return;
         setNotifications((prev) => [newNotification, ...prev]);
+
+        notificationAuido.play();
       } catch {}
     };
 
@@ -116,7 +120,7 @@ export default function Notifications() {
             </div>
           )}
           {!loading && notifications.length > 0 && (
-            <div className="overflow-y-scroll scrollbar-elegant h-full overflow-x-hidden  divide-y">
+            <div className="animate-fade-in overflow-y-scroll scrollbar-elegant h-full overflow-x-hidden  divide-y">
               {notifications.map((notif) => {
                 return (
                   <NotificationCard

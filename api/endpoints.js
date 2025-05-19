@@ -29,6 +29,7 @@ const ENDPOINTS = {
   TEST: {
     SEND_MESSAGE: `${ROOTS.TEST}/send_message`,
     GET_ALL_MESSAGES: `${ROOTS.TEST}/get_all_messages`,
+    RESET_CHAT_CONTEXT: `${ROOTS.TEST}/clear_chat_context`,
   },
 };
 

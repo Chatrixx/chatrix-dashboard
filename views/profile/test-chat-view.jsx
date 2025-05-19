@@ -4,12 +4,22 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Loader2, MoreVertical, Phone, Send, User, Video } from "lucide-react";
+import {
+  Loader2,
+  MoreVertical,
+  Phone,
+  Recycle,
+  RefreshCcw,
+  Send,
+  User,
+  Video,
+} from "lucide-react";
 import api from "@/api/_axios";
 import ENDPOINTS from "@/api/endpoints";
 import { useAuth } from "@/context/auth";
 import { toast } from "sonner";
 import { getReadableDate } from "@/util/date";
+import { cn } from "@/lib/utils";
 export default function TestChatView() {
   const { user } = useAuth();
   const TestReceiverUser = {
@@ -23,6 +33,11 @@ export default function TestChatView() {
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
   const shouldPollRef = useRef(null);
+
+  // Reset Chat States
+  const [isResetLoading, setIsResetLoading] = useState(false);
+  const [resetCount, setResetCount] = useState(0);
+  const [resetError, setResetError] = useState(null);
 
   const [sendMessageLoading, setSendMessageLoading] = useState(false);
   const shouldPoll = useMemo(
@@ -103,6 +118,21 @@ export default function TestChatView() {
     handleFetchMessages();
   }, []);
 
+  const handleResetChat = async () => {
+    try {
+      setIsResetLoading(true);
+      await api.get(ENDPOINTS.TEST.RESET_CHAT_CONTEXT);
+      setResetCount((prev) => resetCount + 1);
+      setMessages([]);
+      setNewMessage("");
+      toast("Sohbet bağlamı sıfırlandı");
+    } catch (error) {
+      setResetError(error);
+    } finally {
+      setIsResetLoading(false);
+    }
+  };
+
   if (messagesLoading && fetchCount === 0) {
     return (
       <Card className="py-4 flex items-center justify-center">
@@ -136,18 +166,34 @@ export default function TestChatView() {
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-2"></div>
+          <div className="flex items-center space-x-2">
+            <Button onClick={handleResetChat} variant="secondary">
+              {isResetLoading ? (
+                <div className="animate-pulse">
+                  <Loader2 className="animate-spin" />
+                </div>
+              ) : (
+                <RefreshCcw />
+              )}
+              Sohbeti Sıfırla
+            </Button>
+          </div>
         </div>
       </CardHeader>
 
-      <CardContent className="p-0 flex-1 basis-full overflow-y-scroll">
+      <CardContent
+        className={cn(
+          "p-0 flex-1 basis-full overflow-y-scroll",
+          isResetLoading ? "opacity-25 pointer-events-none" : "",
+        )}
+      >
         {/* Chat Messages */}
         <div className="p-4">
           <div className="space-y-4">
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                className={`animate-fade-in flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`max-w-[70%] rounded-lg px-4 py-2 ${
@@ -203,7 +249,12 @@ export default function TestChatView() {
       </CardContent>
       {/* Message Input */}
       <div className="border-t p-4 min-h-max">
-        <div className="flex items-center space-x-2">
+        <div
+          className={cn(
+            "flex items-center space-x-2",
+            isResetLoading ? " opacity-70 pointer-events-none" : "",
+          )}
+        >
           <Input
             className={`flex-1 ${sendMessageLoading ? "text-muted-foreground" : ""}`}
             placeholder="Mesajınızı yazın..."

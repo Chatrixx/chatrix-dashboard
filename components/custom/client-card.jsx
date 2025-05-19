@@ -16,7 +16,7 @@ export default function ClientCard({ client, isSelected }) {
   return (
     <ClientLink userId={client?._id ?? "123456789"}>
       <Card
-        className={`w-full hover:shadow-sm transition-shadow cursor-pointer ${isSelected ? "border-primary" : ""}`}
+        className={`hover:bg-secondary duration-100 animate-fade-in w-full hover:shadow-sm transition-all cursor-pointer ${isSelected ? "border-primary" : ""}`}
       >
         <CardContent className="p-4">
           <div className="flex items-start space-x-4">
@@ -27,7 +27,7 @@ export default function ClientCard({ client, isSelected }) {
               </AvatarFallback>
             </Avatar>
 
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-1">
               <div>
                 <h3 className="font-medium text-base">{client.full_name}</h3>
               </div>

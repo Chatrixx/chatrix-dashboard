@@ -4,7 +4,7 @@ import api, { currentBaseUrl } from "@/api/_axios";
 import MainLayout from "@/components/custom/layout/main-layout";
 import CircleLoader from "@/components/custom/circle-loader";
 import NotificationCard from "@/components/custom/notification-card";
-import { SearchX, X } from "lucide-react";
+import { MessageCircleQuestion, Phone, SearchX, User, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -106,10 +106,16 @@ export default function Notifications() {
           <Card className="hidden md:flex flex-col w-1/2 lg:w-1/3 p-6 bg-white shadow-md animate-fade-in mt-4 border rounded-lg space-y-4">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="font-semibold text-gray-800">
                   {selectedNotification.title}
                 </h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <div className="flex items-center gap-1 mt-4">
+                  <MessageCircleQuestion size={16} className="text-gray-800" />
+                  <h6 className="text-sm font-semibold text-gray-800">
+                    Sohbet Özeti
+                  </h6>
+                </div>
+                <p className="mt-1 text-sm text-gray-700">
                   {selectedNotification.body.summary ||
                     "Bu bildirim için bir özet yok."}
                 </p>
@@ -124,9 +130,16 @@ export default function Notifications() {
               </Button>
             </div>
             {selectedNotification.body.phoneNumber && (
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Telefon:</span>{" "}
-                {selectedNotification.body.phoneNumber}
+              <div>
+                <div className="flex items-center gap-1 mt-2">
+                  <Phone size={16} />
+                  <h6 className="text-sm font-semibold">
+                    Telefon:{" "}
+                    <span className="underline">
+                      {selectedNotification.body.phoneNumber}
+                    </span>
+                  </h6>
+                </div>
               </div>
             )}
             <Link href={`/clients/${selectedNotification.body.clientId}`}>
@@ -135,7 +148,8 @@ export default function Notifications() {
                 className="w-full mt-2"
                 onClick={() => setSelectedNotification(null)}
               >
-                Detayları Görüntüle
+                <User strokeWidth={2.4} />
+                Kullanıcı Detayına Git
               </Button>
             </Link>
           </Card>

@@ -103,7 +103,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 place-items-baseline flex-wrap">
                 <h3 className="text-4xl font-semibold mt-2">
-                  {analytics.data?.total_messengers}
+                  {analytics.data?.total_messengers.current}
                 </h3>
               </div>
             </Card>
@@ -112,8 +112,9 @@ export default function Home() {
             <RatioPieChart
               dateRangeString={dateRangeString}
               data={{
-                total: analytics.data?.total_messengers,
-                total_phone_numbers: analytics.data?.total_phone_numbers_given,
+                total: analytics.data?.total_messengers.current,
+                total_phone_numbers:
+                  analytics.data?.total_phone_numbers_given.current,
                 ratio: analytics.data?.total_phone_ratio,
               }}
             />

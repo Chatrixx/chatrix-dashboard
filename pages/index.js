@@ -101,7 +101,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 place-items-baseline flex-wrap">
                 <h3 className="text-4xl font-semibold mt-2">
-                  {analytics.data?.total_messengers}
+                  {analytics.data?.total_messengers.current}
                 </h3>
                 <Badge className="border-[0.5px] border-dashed border-teal-700/20 outline-1 flex items-center gap-1 pointer-events-none bg-gradient-to-tr from-teal-50 to-teal-50 text-teal-900">
                   <ArrowUp size={14} /> 12%
@@ -148,8 +148,9 @@ export default function Home() {
             <RatioPieChart
               dateRangeString={dateRangeString}
               data={{
-                total: analytics.data?.total_messengers,
-                total_phone_numbers: analytics.data?.total_phone_numbers_given,
+                total: analytics.data?.total_messengers.current,
+                total_phone_numbers:
+                  analytics.data?.total_phone_numbers_given.current,
                 ratio: analytics.data?.total_phone_ratio,
               }}
             />
